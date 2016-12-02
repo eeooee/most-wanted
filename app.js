@@ -1,5 +1,6 @@
-var dataObject = {
-	"272822514" : {
+var dataObject = [
+	 {ID: 272822514,
+  	 profile: {
 	  "firstName": "Billy",
 	  "lastName": "Bob",
 	  "gender": "male",
@@ -10,8 +11,9 @@ var dataObject = {
 	  "occupation": "programmer",
 	  "parents": [],
 	  "currentSpouse": 401222887
-	},
-	"401222887" : {
+	}},
+	{ID:401222887,
+  profile:  {
 	  "firstName": "Uma",
 	  "lastName": "Bob",
 	  "gender": "female",
@@ -22,8 +24,9 @@ var dataObject = {
 	  "occupation": "assistant",
 	  "parents": [],
 	  "currentSpouse": 272822514
-	},
-	"409574486" : {
+	}},
+	{ID:409574486,
+		profile : {
 	  "firstName": "Michael",
 	  "lastName": "Walkens",
 	  "gender": "male",
@@ -34,8 +37,9 @@ var dataObject = {
 	  "occupation": "landscaper",
 	  "parents": [],
 	  "currentSpouse": 260451248
-	},
-	"260451248" : {
+	}},
+	{ID: 260451248,
+		profile : {
 	  "firstName": "Jon",
 	  "lastName": "Walkens",
 	  "gender": "male",
@@ -46,8 +50,9 @@ var dataObject = {
 	  "occupation": "assistant",
 	  "parents": [],
 	  "currentSpouse": 409574486
-	},
-	"629807187" : {
+	}},
+	{ID:629807187,
+		profile : {
 	  "firstName": "Jack",
 	  "lastName": "Pafoy",
 	  "gender": "male",
@@ -58,8 +63,9 @@ var dataObject = {
 	  "occupation": "nurse",
 	  "parents": [],
 	  "currentSpouse": 464142841
-	},
-	"464142841" : {
+	}},
+	{ID:464142841,
+		profile : {
 	  "firstName": "Jen",
 	  "lastName": "Pafoy",
 	  "gender": "female",
@@ -70,8 +76,9 @@ var dataObject = {
 	  "occupation": "student",
 	  "parents": [],
 	  "currentSpouse": 629807187
-	},
-	"982411429" : {
+	}},
+	{ID:982411429,
+		profile : {
 	  "firstName": "Mister",
 	  "lastName": "Potatoo",
 	  "gender": "male",
@@ -82,8 +89,9 @@ var dataObject = {
 	  "occupation": "architect",
 	  "parents": [],
 	  "currentSpouse": 595767575
-	},
-	"595767575" : {
+	}},
+	{ID:595767575,
+		profile : {
 	  "firstName": "Missuz",
 	  "lastName": "Potatoo",
 	  "gender": "female",
@@ -94,8 +102,9 @@ var dataObject = {
 	  "occupation": "architect",
 	  "parents": [],
 	  "currentSpouse": 982411429
-	},
-	"693243224" : {
+	}},
+	{ID: 693243224,
+		profile : {
 	  "firstName": "Joy",
 	  "lastName": "Madden",
 	  "gender": "female",
@@ -106,8 +115,9 @@ var dataObject = {
 	  "occupation": "doctor",
 	  "parents": [],
 	  "currentSpouse": null
-	},
-	"888201200" : {
+	}},
+	{ID:888201200,
+		profile : {
 	  "firstName": "Mader",
 	  "lastName": "Madden",
 	  "gender": "male",
@@ -118,8 +128,9 @@ var dataObject = {
 	  "occupation": "landscaper",
 	  "parents": [],
 	  "currentSpouse": null
-	},
-	"878013758" : {
+	}},
+	{ID:878013758,
+		profile: {
 	  "firstName": "Jill",
 	  "lastName": "Pafoy",
 	  "gender": "Bob",
@@ -130,8 +141,9 @@ var dataObject = {
 	  "occupation": "programmer",
 	  "parents": [401222887],
 	  "currentSpouse": 294874671
-	},
-	"951747547" : {
+	}},
+	{ID:951747547,
+		profile : {
 	  "firstName": "Ralph",
 	  "lastName": "Bob",
 	  "gender": "male",
@@ -142,8 +154,9 @@ var dataObject = {
 	  "occupation": "nurse",
 	  "parents": [401222887],
 	  "currentSpouse": 159819275
-	},
-	"159819275" : {
+	}},
+	{ID:159819275,
+		profile : {
 	  "firstName": "Jasmine",
 	  "lastName": "Bob",
 	  "gender": "female",
@@ -154,8 +167,9 @@ var dataObject = {
 	  "occupation": "assistant",
 	  "parents": [409574486,260451248],
 	  "currentSpouse": 951747547
-	},
-	"348457184" : {
+	}},
+	{ID:348457184,
+		profile : {
 	  "firstName": "Annie",
 	  "lastName": "Pafoy",
 	  "gender": "female",
@@ -166,8 +180,9 @@ var dataObject = {
 	  "occupation": "landscaper",
 	  "parents": [629807187,464142841],
 	  "currentSpouse": null
-	},
-	"294874671" : {
+	}},
+	{ID:294874671,
+		profile : {
 	  "firstName": "Dave",
 	  "lastName": "Pafoy",
 	  "gender": "male",
@@ -178,8 +193,9 @@ var dataObject = {
 	  "occupation": "doctor",
 	  "parents": [629807187,464142841],
 	  "currentSpouse": 878013758
-	},
-	"931247228" : {
+	}},
+	{ID:931247228,
+		profile : {
 	  "firstName": "Amii",
 	  "lastName": "Pafoy",
 	  "gender": "female",
@@ -190,8 +206,9 @@ var dataObject = {
 	  "occupation": "landscaper",
 	  "parents": [629807187,464142841],
 	  "currentSpouse": null
-	},
-	"822843554" : {
+	}},
+	{ID:822843554,
+		profile: {
 	  "firstName": "Regina",
 	  "lastName": "Madden",
 	  "gender": "female",
@@ -202,8 +219,9 @@ var dataObject = {
 	  "occupation": "nurse",
 	  "parents": [693243224, 888201200],
 	  "currentSpouse": null
-	},
-	"819168108" : {
+	}},
+	{ID:819168108,
+		profile : {
 	  "firstName": "Hana",
 	  "lastName": "Madden",
 	  "gender": "female",
@@ -214,8 +232,9 @@ var dataObject = {
 	  "occupation": "politician",
 	  "parents": [693243224, 888201200],
 	  "currentSpouse": null
-	},
-	"969837479" : {
+	}},
+	{ID:969837479,
+		profile : {
 	  "firstName": "Eloise",
 	  "lastName": "Madden",
 	  "gender": "female",
@@ -226,8 +245,9 @@ var dataObject = {
 	  "occupation": "assistant",
 	  "parents": [693243224, 888201200],
 	  "currentSpouse": null
-	},
-	"313207561" : {
+	}},
+	{ID:313207561,
+		profile : {
 	  "firstName": "Mattias",
 	  "lastName": "Madden",
 	  "gender": "male",
@@ -238,8 +258,9 @@ var dataObject = {
 	  "occupation": "assistant",
 	  "parents": [693243224, 888201200],
 	  "currentSpouse": 313997561
-	},
-	"313997561" : {
+	}},
+	{ID:313997561,
+		profile : {
 	  "firstName": "Ellen",
 	  "lastName": "Madden",
 	  "gender": "female",
@@ -250,8 +271,9 @@ var dataObject = {
 	  "occupation": "doctor",
 	  "parents": [],
 	  "currentSpouse": 313207561
-	},
-	"313998000" : {
+	}},
+	{ID:313998000,
+	profile : {
 	  "firstName": "Joey",
 	  "lastName": "Madden",
 	  "gender": "female",
@@ -262,8 +284,7 @@ var dataObject = {
 	  "occupation": "doctor",
 	  "parents": [313207561,313997561],
 	  "currentSpouse": null
-	}
-};
+	}}];
 
 /*  Remove this from your final submission
 function printAllToConsole(dataObj){
@@ -280,10 +301,11 @@ function initSearch(){
 	alert("Hello World");
 
 	// get all the information you need to run the search
-	var yourName = prompt("Who do you want to search for?");
+	var lastname = prompt("Who do you want to search for?  Enter their last name.");
+	var firstname = prompt("Enter their first name");
 
 	// then pass that info to the respective function.
-	var result = getPersonInfo("J", "T")
+	var result = getPersonInfo(firstname, lastname)
 
 	// once the search is done, pass the results to the responder function
 	responder(result);
@@ -295,15 +317,34 @@ function responder(results){
 }
 
 function getPersonInfo(firstname, lastname){
-	var result = "This will be the information for whoever you searched for";
-	// look up person's information
-	return result;
+	var result = dataObject.filter(function(element){
+		//seems like this is the only way to access element outside
+		//of the scope of this method
+		return getFirstAndLast(element,lastname,firstname);
+	});
+	return getDescendents(result);
 }
 
+function getDescendents(element){
+	if(element.filter((getDescendents(element))){
+	return elements.profile.parents.filter(element);
+	}
+	return
+}
+function getFirstAndLast(element, lastname, firstname){
+	return element.profile.lastName===lastname && element.profile.firstName===firstname;
+}
+function getLastName(element, lastname){
+	//index 0 is the ID, index 1 is the data
+	return element.profile.lastName===lastname;
+}
 function getFamily(){
 	// return list of names of immediate family members
 }
 
+function literalFilter(){
+
+}
 // there will be much more here, and some of the code above will certainly change
 
 initSearch();
