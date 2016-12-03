@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 var persons = [{
     "id": 272822514,
     "firstName": "Billy",
@@ -264,40 +265,60 @@ var persons = [{
     "currentSpouse": null
 }];
 
-var input;
-
 function start() {
-    //input = "1";
-    input = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
+    var input = "1";
+    //input = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     switch (input) {
-        case "1":
-            //input = "Joey Madden".split(" ");
-            input = prompt("Enter a first and last name to search.").trim().split(" ");
-            var results = persons.filter(isLastName);
-            var person = results.filter(isFirstName);
-            responder(person);
-            input = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n");
-            break;
-        case "2":
-            input = prompt("Please type your search terms, separated by commas:\n");
-            break;
-        case "3":
-            alert("You have exited the most-wanted search.");
-            exit();
-            break;
-        default:
-            alert("Invalid Selection!");
-            break;
+    case "1":
+        input = "Joey Madden".split(" ");
+        //input = prompt("Enter a first and last name to search.").trim().split(" ");
+        //var results = filterByElement(persons, 'lastName', 'Madden');
+        //var person = filterByElement(results, 'firstName', 'Joey');
+        let results = persons.filter(x => hasLastName(input[1], x));
+        let people = results.filter(x => hasFirstName(input[0], x));
+        responder(people);
+        //input = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n");
+        break;
+    case "2":
+        input = prompt("Please type your search terms, separated by commas:\n");
+        break;
+    case "3":
+        alert("You have exited the most-wanted search.");
+        exit();
+        break;
+    default:
+        alert("Invalid Selection!");
+        break;
     }
-    start();
+    //start();
 }
 
-function isFirstName(person) {
-    return person.firstName === input[0];
+function hasLastName(lastName, person) {
+  return person.lastName === lastName;
 }
 
-function isLastName(person) {
-    return person.lastName === input[1];
+function hasFirstName(firstName, person) {
+  return person.firstName === firstName;
+}
+
+function hasGener(gender, person) {
+  return person.gender === gender;
+}
+
+function hasHeight(height, person) {
+  return person.height === height;
+}
+
+function hasWeight(weight, person) {
+  return person.weight === weight;
+}
+
+function hasEyeColor(eyeColor, person) {
+  return person.eyeColor === eyeColor;
+}
+
+function hasOccupation(occupation, person) {
+  return person.occupation === occupation;
 }
 
 function responder(person) {
@@ -308,20 +329,5 @@ function responder(person) {
 function exit() {
     window.exit(0);
 }
-
-// function getDescendents(element) {
-//     if (element.filter(getDescendents(element))) {
-//         return elements.parents.filter(element);
-//     }
-//     return;
-// }
-
-// function getFamily() {
-//     // return list of names of immediate family members
-// }
-//
-// function literalFilter() {
-//
-// }
 
 start();
