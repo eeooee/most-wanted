@@ -272,6 +272,8 @@ function start() {
     switch (input) {
         case "1":
             input = prompt("Enter a first and last name to search.").trim().split(" ");
+            var results = persons.filter(isLastName);
+            var person = results.filter(isFirstName);
             input = prompt("What do you want to know? Type one of the following searches:\r\nGet Descendants\r\nGet Next of Kin\r\n");
             break;
         case "2":
@@ -285,6 +287,14 @@ function start() {
             break;
     }
     start();
+}
+
+function isFirstName(person) {
+    return person.firstName === input[0];
+}
+
+function isLastName(person) {
+    return person.lastName === input[1];
 }
 
 function exit() {
