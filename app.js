@@ -273,22 +273,20 @@ function start() {
         case "1":
             //input = "Joey Madden".split(" ");
             input = prompt("Enter a first and last name to search.").trim().split(" ");
-            checkUserInput(input);
             var results = persons.filter(isLastName);
             var person = results.filter(isFirstName);
             responder(person);
-            input = prompt("What do you want to know? Type one of the following searches:\r\nGet Descendants\r\nGet Next of Kin\r\n");
-            checkUserInput(input);
+            input = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n");
             break;
         case "2":
             input = prompt("Please type your search terms, separated by commas:\n");
-            checkUserInput(input);
             break;
         case "3":
+            alert("You have exited the most-wanted search.");
             exit();
             break;
         default:
-            alert("Invalid");
+            alert("Invalid Selection!");
             break;
     }
     start();
@@ -307,19 +305,7 @@ function responder(person) {
     //alert(person);
 }
 
-function checkUserInput(check) {
-    try {
-        if (check === undefined) {
-            throw ("Invalid");
-        }
-    } catch (Invalid) {
-        console.error(error.message);
-        console.log("No Data Found! Reload page.");
-    }
-}
-
 function exit() {
-    alert("You have exited the most-wanted search.");
     window.exit(0);
 }
 
