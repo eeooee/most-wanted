@@ -309,4 +309,19 @@ function exit() {
     window.exit(0);
 }
 
+// function getDescendents(element) {
+//     if (element.filter(getDescendents(element))) {
+//         return elements.parents.filter(element);
+//     }
+//     return;
+// }
+
+// function getFamily() {
+//     // return list of names of immediate family members
+// }
+//
+// function literalFilter() {
+//
+// }
+
 start();
