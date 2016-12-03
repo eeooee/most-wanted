@@ -264,26 +264,31 @@ var persons = [{
     "currentSpouse": null
 }];
 
-start();
 var input;
 
 function start() {
+    //input = "1";
     input = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     switch (input) {
         case "1":
+            //input = "Joey Madden".split(" ");
             input = prompt("Enter a first and last name to search.").trim().split(" ");
+            checkUserInput(input);
             var results = persons.filter(isLastName);
             var person = results.filter(isFirstName);
+            responder(person);
             input = prompt("What do you want to know? Type one of the following searches:\r\nGet Descendants\r\nGet Next of Kin\r\n");
+            checkUserInput(input);
             break;
         case "2":
             input = prompt("Please type your search terms, separated by commas:\n");
+            checkUserInput(input);
             break;
         case "3":
             exit();
             break;
         default:
-            alert("Error");
+            alert("Invalid");
             break;
     }
     start();
@@ -297,7 +302,25 @@ function isLastName(person) {
     return person.lastName === input[1];
 }
 
+function responder(person) {
+    console.log(person);
+    //alert(person);
+}
+
+function checkUserInput(check) {
+    try {
+        if (check === undefined) {
+            throw ("Invalid");
+        }
+    } catch (Invalid) {
+        console.error(error.message);
+        console.log("No Data Found! Reload page.");
+    }
+}
+
 function exit() {
     alert("You have exited the most-wanted search.");
     window.exit(0);
 }
+
+start();
