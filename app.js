@@ -290,7 +290,8 @@ const start = (objects) => {
     switch (inputNumber) {
         case "1":
             let name = "Mattias Madden".split(' ');
-            //let name = "Joy Madden".split(" ");
+            //let name = 'Ralph Bob'.split(' ');
+            //let name = "Joy Madden".split(' ');
             let person = matchingFirstName(name[0], matchingLastName(name[1], objects));
             getInput(person[0], objects);
             //console.log(person);
@@ -310,7 +311,7 @@ const start = (objects) => {
     //start();
 };
 const getInput = (object, objects) => {
-    let inputNumber = '1';
+    let inputNumber = '2';
     //let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n4. Search Again");
     switch (inputNumber) {
         case '1':
@@ -336,7 +337,7 @@ const getInput = (object, objects) => {
     }
 };
 
-const responder = (object) => console.log(object);
+const responder = (object) => console.log(object); //alert(object);
 const exit = () => window.exit();
 
 // const matchingGender = (element, object) => object.gender === element;
@@ -347,7 +348,15 @@ const exit = () => window.exit();
 // const matchingParentId = (element, object) => object === element;
 const matchingChildren = (object, objects) => objects.filter(o => o.parents[0] === object.id || o.parents[1] === object.id);
 const matchingSpouse = (object, objects) => objects.filter(o => o.id === object.currentSpouse);
-const matchingParents = (parents, objects) => objects.filter(o => o.parents[0] === parents[0] || o.parents[1] === parents[0] || o.parents[0] === parents[1] || o.parents[1] === [1]);
+const matchingParents = (parents, objects) => {
+    if (parents.length <= 0) {
+        return [];
+    }
+    if (parents.length == 1) {
+        return objects.filter(o => o.parents[0] === parents[0]);
+    }
+    return objects.filter(o => o.parents[0] === parents[0] || o.parents[0] === parents[1] || o.parents[1] === parents[0] || o.parents[1] === parents[1]);
+};
 const matchingLastName = (element, objects) => objects.filter(o => o.lastName === element);
 const matchingFirstName = (element, objects) => objects.filter(o => o.firstName === element);
 const excludeMatchingObject = (object, objects) => objects.filter(o => o !== object);
