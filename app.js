@@ -293,8 +293,6 @@ function start() {
     switch (inputNumber) {
         case "1":
             name = "Mattias Madden".split(" ");
-            lastNameMatches(name[1]);
-            person(name[0]);
             //name = prompt("Enter a first and last name to search.").split(" ");
             break;
         case "2":
@@ -311,10 +309,11 @@ function start() {
     //start();
 }
 function getInput() {
-    let inputNumber = '2';
+    let inputNumber = '1';
     //let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n4. Search Again");
     switch (inputNumber) {
         case '1':
+            responder(descendants(person));
             break;
         case '2':
             responder(family(person));
@@ -352,8 +351,9 @@ const isParent = p => p.parents;
 const getFirstAndLast = p => p.firstName + ' ' + p.lastName;
 const hasSpouse = (spouse, person) => person.id === spouse;
 const hasChildren = (id, person) => person.parents[0] === id || person.parents[1] === id;
-const lastNameMatches = name => persons.filter(p => hasLastName(name, p));
-const person = name => lastNameMatches.filter(p => hasFirstName(name, p));
+start();
+const lastNameMatches = persons.filter(p => hasLastName(name[1], p));
+const person = lastNameMatches.filter(p => hasFirstName(name[0], p));
 const family = p => {
     let family = [];
     family.parents = parents(p);
@@ -386,14 +386,13 @@ const children = p => {
       .filter(p => hasChildren(id[0], p))
       .map(getFirstAndLast);
 };
-let descendants = person => {
-    let id = person.map(isParent).toString().split(',');
+const descendants = person => {
     let totalDescendants = [];
     persons
-      .filter(p => hasSameParent(id[0], p) || hasSameParent(id[1], p))
-      .forEach(p => totalDescendants.push(p), descendants(p));
+      .filter(p => p.parents.filter(parent => parent === person.id))
+      .forEach(p => totalDescendants.push(p, descendants(p)));
+
     return totalDescendants;
 };
-console.log(descendants(person));
-start();
+// console.log(descendants(person));
 getInput();
