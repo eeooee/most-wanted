@@ -330,29 +330,28 @@ const hasOccupation = (occupation, person) => person.occupation === occupation;
 const hasSameParent = (parent, person) => person.parents[0] === parent || person.parents[1] === parent;
 const hasSpouse = (spouse, person) => person.id === spouse;
 const hasChildren = p => p.parents[0] === person[0].id || p.parents[1] === person[0].id;
-const isParent = p => p.id === person[0].parents[0];
+const isParent = p => p.id === person[0].parents[0] || p.id === person[0].parents[1];
 start();
 const lastNameMatches = persons.filter(p => hasLastName(name[1], p));
 const person = lastNameMatches.filter(p => hasFirstName(name[0], p));
-const parents = persons.filter(p => isParent(p) || isParent(p));
+const parents = persons.filter(p => isParent(p));
 const siblings = persons.filter(p => hasSameParent(person[0].parents[0], p) || hasSameParent(person[0].parents[1], p));
 const children = persons.filter(p => hasChildren(p));
 const spouse = persons.filter(p => hasSpouse(person[0].currentSpouse, p));
+const family = p => {
+  let family = [];
+  family.parents = (parents.map(p => p.firstName + ' ' + p.lastName));
+  family.siblings = (siblings.map(s => s.firstName + ' ' + s.lastName));
+  family.spouse = (spouse.map(s => s.firstName + ' ' + s.lastName));
+  family.children = (children.map(c => c.firstName + ' ' + c.lastName));
+  return family;
+};
 
 //input = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n");
-function getFamily(person){
-	var family = [];
-  family.push(children.map(c => c.firstName + ' ' + c.lastName));
-  family.push(siblings.map(s => s.firstName + ' ' + s.lastName));
-  family.push(spouse.map(s => s.firstName + ' ' + s.lastName));
-  family.push(parents.map(p => p.firstName + ' ' + p.lastName));
-
-	return family;
-}
 //console.log(person);
 //console.log(children);
 // console.log(person);
 // console.log(siblings);
 // console.log(spouse);
- console.log(getFamily(person));
+console.log(family(person));
 //console.log(family(person));
