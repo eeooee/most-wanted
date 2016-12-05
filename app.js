@@ -285,19 +285,20 @@ const persons = [
     }
 ];
 
-var input = "1";
+var name;
+var traits;
 function start() {
-    //input = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
-    switch (input) {
+    let inputNumber = "1";
+    //inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
+    switch (inputNumber) {
         case "1":
-            input = "Eloise Madden".split(" ");
-            // input = prompt("Enter a first and last name to search.")
+            name = "Mattias Madden".split(" ");
+            // name = prompt("Enter a first and last name to search.")
             //     .trim()
             //     .split(" ");
-            //input = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n");
             break;
         case "2":
-            input = prompt("Please type your search terms, separated by commas:\n");
+            traits = prompt("Please type your search terms, separated by commas:\n");
             break;
         case "3":
             alert("You have exited the most-wanted search.");
@@ -310,25 +311,48 @@ function start() {
     //start();
 }
 
-function responder(person){
-  console.log(person);
-//alert(person.firstName + " " + person.lastName);
+function responder(person) {
+    console.log(person);
+    //alert(person.firstName + " " + person.lastName);
 }
 
 function exit() {
-  window.exit(0);
+    window.exit(0);
 }
 
-const hasLastName = p => p.lastName === input[1];
-const hasFirstName = p => p.firstName === input[0];
-const hasGender = p => p.gender === input[0];
-const hasHeight = p => p.height === input[1];
-const hasWeight = p => p.weight === input[2];
-const hasEyeColor = p => p.eyeColor === input[3];
-const hasOccupation = p => p.occupation === input[4];
-const isParent = p => p.parents;
-
+const hasLastName = (lastName, person) => person.lastName === lastName;
+const hasFirstName = (firstName, person) => person.firstName === firstName;
+const hasGender = (gender, person) => person.gender === gender;
+const hasHeight = (height, person) => person.height === height;
+const hasWeight = (weight, person) => person.weight === weight;
+const hasEyeColor = (eyeColor, person) => person.eyeColor === eyeColor;
+const hasOccupation = (occupation, person) => person.occupation === occupation;
+const hasSameParent = (parent, person) => person.parents[0] === parent || person.parents[1] === parent;
+const hasSpouse = (spouse, person) => person.id === spouse;
+const hasChildren = p => p.parents[0] === person[0].id || p.parents[1] === person[0].id;
+const isParent = p => p.id === person[0].parents[0];
 start();
-const lastNameMatches = persons.filter(p => hasLastName(p));
-const firstAndLastNameMatches = lastNameMatches.filter(p => hasFirstName(p));
-responder(firstAndLastNameMatches);
+const lastNameMatches = persons.filter(p => hasLastName(name[1], p));
+const person = lastNameMatches.filter(p => hasFirstName(name[0], p));
+const parents = persons.filter(p => isParent(p) || isParent(p));
+const siblings = persons.filter(p => hasSameParent(person[0].parents[0], p) || hasSameParent(person[0].parents[1], p));
+const children = persons.filter(p => hasChildren(p));
+const spouse = persons.filter(p => hasSpouse(person[0].currentSpouse, p));
+
+//input = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n");
+function getFamily(person){
+	var family = [];
+  family.push(children.map(c => c.firstName + ' ' + c.lastName));
+  family.push(siblings.map(s => s.firstName + ' ' + s.lastName));
+  family.push(spouse.map(s => s.firstName + ' ' + s.lastName));
+  family.push(parents.map(p => p.firstName + ' ' + p.lastName));
+
+	return family;
+}
+//console.log(person);
+//console.log(children);
+// console.log(person);
+// console.log(siblings);
+// console.log(spouse);
+ console.log(getFamily(person));
+//console.log(family(person));
