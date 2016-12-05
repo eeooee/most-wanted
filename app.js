@@ -289,9 +289,10 @@ function start() {
     //let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     switch (inputNumber) {
         case "1":
-            let name = "Mattias Madden".split(" ");
+            let name = "Mattias Madden".split(' ');
+            //let name = "Joy Madden".split(" ");
             let person = firstNameMatches(name[0], lastNameMatches(name[1], persons));
-            getInput(person);
+            getInput(person[0]);
             //console.log(person);
             //name = prompt("Enter a first and last name to search.").split(" ");
             break;
@@ -313,11 +314,11 @@ function getInput(object) {
     //let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n4. Search Again");
     switch (inputNumber) {
         case '1':
-            console.log(getDescendants(object[0]));
+            console.log(getDescendants(object, persons));
             //responder(getDescendants(object));
             break;
         case '2':
-            getFamily(object);
+            console.log(getFamily(object, persons));
             //responder(family(person));
             break;
         case '3':
@@ -349,47 +350,42 @@ const hasEyeColor = (element, object) => object.eyeColor === element;
 const hasOccupation = (element, object) => object.occupation === element;
 const hasSameParent = (element, object) => object.parents[0] == element || object.parents[1] == element;
 const hasParentId = (element, object) => object === element;
-const isParent = object => object.parents;
-const getFirstAndLast = object => object.firstName + ' ' + object.lastName;
 const hasSpouse = (element, object) => object.id === element;
 const hasChildren = (element, object) => object.parents[0] === element || object.parents[1] === element;
-const lastNameMatches = (element, objects) => objects.filter(object => hasLastName(element, object));
-const firstNameMatches = (element, objects) => objects.filter(object => hasFirstName(element, object));
-const getFamily = object => {
+const lastNameMatches = (element, objects) => objects.filter(o => hasLastName(element, o));
+const firstNameMatches = (element, objects) => objects.filter(o => hasFirstName(element, o));
+const getFirstAndLast = object => object.firstName + ' ' + object.lastName;
+const isParent = object => object.parents;
+const getFamily = (object, objects) => {
     let family = [];
     family.parents = getParents(object);
-    family.siblings = getSiblings(object);
-    family.spouse = getSpouse(object);
-    family.children = getChildren(object);
+    family.siblings = getSiblings(object, objects);
+    family.spouse = getSpouse(object, objects);
+    family.children = getChildren(object, objects);
     return family;
 };
 const getParents = object => {
-    let objectParents = object.map(p => p.parents);
-    let parents = persons.map(p => p.parents).filter(p => p.length > 0);
-    return parents
-      .filter(p => hasParentId(objectParents[0], p) || hasParentId(objectParents[1], p));
+    let objectsParents = isParent(object);
+    return objectsParents.map(p => p);
 };
-const getSiblings = object => {
-    let objectParents = getParents(object).toString().split(',');
-    let siblings = persons.filter(p => p !== object[0]);
-    return siblings.filter(p => hasSameParent(objectParents[0], p) || hasSameParent(objectParents[1], p));
+const getSiblings = (object, objects) => {
+    let parents = getParents(object);
+    let siblings = objects.filter(o => o !== object);
+    return siblings.filter(o => hasSameParent(parents[0], o) || hasSameParent(parents[1], o));
 };
-const getSpouse = object => {
-    let objectSpouse = object.map(p => p.currentSpouse);
-    return persons.filter(p => hasSpouse(objectSpouse[0], p));
+const getSpouse = (object, objects) => {
+    return objects.filter(o => hasSpouse(object.currentSpouse, o));
 };
-const getChildren = object => {
-    return persons.filter(p => hasChildren(object.id, p));
+const getChildren = (object, objects) => {
+    return objects.filter(o => hasChildren(object.id, o));
 };
-const getDescendants = (object, totalDescendants = []) => {
-    // console.log(totalDescendants);
-    let children = getChildren(object);
-    if (children == []){
-      return totalDescendants;
+const getDescendants = (object, objects, totalDescendants = []) => {
+    let children = getChildren(object, objects);
+    if (children.length <= 0){
+      return [];
     }
-    children.forEach(child => totalDescendants.push(child, getDescendants(child, totalDescendants)));
-    console.log(totalDescendants);
+    children.forEach(child => totalDescendants.push(child));
+    children.forEach(child => getDescendants(child, objects, totalDescendants));
     return totalDescendants;
 };
-// console.log(descendants(person));
 start();
