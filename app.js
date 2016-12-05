@@ -293,10 +293,7 @@ function start() {
     switch (inputNumber) {
         case "1":
             name = "Mattias Madden".split(" ");
-            console.log(name);
-            /*name = prompt("Enter a first and last name to search.")
-                .trim()
-                .split(" ");*/
+            //name = prompt("Enter a first and last name to search.").split(" ");
             break;
         case "2":
             traits = prompt("Please type your search terms, separated by commas:\n");
@@ -319,7 +316,7 @@ function getInput() {
         case '1':
             break;
         case '2':
-            //responder(family(person));
+            responder(family(person));
             break;
         case '3':
             break;
@@ -330,12 +327,14 @@ function getInput() {
             alert("Invalid Selection!");
             break;
     }
-    //getInput();
 }
 
 function responder(object) {
-    console.log(JSON.stringify(object)); //alert(JSON.stringify(object));
-    console.log(family(person));
+    console.log(object);
+}
+
+function exit() {
+    window.exit();
 }
 
 const hasLastName = (lastName, person) => person.lastName === lastName;
@@ -352,21 +351,20 @@ const hasChildren = (id, person) => person.parents[0] === id || person.parents[1
 start();
 const lastNameMatches = persons.filter(p => hasLastName(name[1], p));
 const person = lastNameMatches.filter(p => hasFirstName(name[0], p));
-const getParents = lastNameMatches.map(p => p.parents);
 const parents = p => {
     let id = p
-        .map(p => p.parents)
-        .toString()
-        .split(',');
+      .map(p => p.parents)
+      .toString()
+      .split(',');
     return persons
       .filter(p => isParent(id[0], p) || isParent(id[1], p))
       .map(p => p.firstName + ' ' + p.lastName);
 };
 const siblings = p => {
     let id = p
-        .map(p => p.parents)
-        .toString()
-        .split(',');
+      .map(p => p.parents)
+      .toString()
+      .split(',');
     return persons
       .filter(p => hasSameParent(id[0], p) || hasSameParent(id[1], p))
       .map(p => p.firstName + ' ' + p.lastName);
@@ -383,8 +381,6 @@ const children = p => {
       .filter(p => hasChildren(id[0], p))
       .map(p => p.firstName + ' ' + p.lastName);
 };
-//const children = persons.filter(p => hasChildren(person.id, p));
-//const spouse = persons.filter(p => hasSpouse(person.currentSpouse, p));
 const family = p => {
     let family = [];
     family.parents = parents(p);
@@ -399,14 +395,3 @@ let descendants = (persons, parents) => {
     return totalDescendants;
 };
 getInput();
-
-console.log(person);
-// parents(person);
-// console.log(parents(person));
-// console.log(siblings(person));
-// console.log(spouse(person));
-// console.log(children(person));
-console.log(family(person));
-function exit() {
-    window.exit();
-}
