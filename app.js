@@ -285,18 +285,17 @@ var persons = [
     }
 ];
 
-var name;
-var traits;
 function start() {
     let inputNumber = "1";
     //let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     switch (inputNumber) {
         case "1":
-            name = "Mattias Madden".split(" ");
+            let name = "Mattias Madden".split(" ");
+            person(name[0], lastNameMatches(name[1], persons));
             //name = prompt("Enter a first and last name to search.").split(" ");
             break;
         case "2":
-            traits = prompt("Please type your search terms, separated by commas:\n");
+            //let traits = prompt("Please type your search terms, separated by commas:\n");
             break;
         case "3":
             alert("You have exited the most-wanted search.");
@@ -309,7 +308,7 @@ function start() {
     //start();
 }
 function getInput() {
-    let inputNumber = '1';
+    let inputNumber = '2';
     //let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n4. Search Again");
     switch (inputNumber) {
         case '1':
@@ -338,32 +337,31 @@ function exit() {
     window.exit();
 }
 
-const hasLastName = (lastName, person) => person.lastName === lastName;
-const hasFirstName = (firstName, person) => person.firstName === firstName;
-const hasGender = (gender, person) => person.gender === gender;
-const hasHeight = (height, person) => person.height === height;
-const hasWeight = (weight, person) => person.weight === weight;
-const hasEyeColor = (eyeColor, person) => person.eyeColor === eyeColor;
-const hasOccupation = (occupation, person) => person.occupation === occupation;
-const hasSameParent = (parent, person) => person.parents[0] == parent || person.parents[1] == parent;
-const hasParentId = (parent, person) => person.id == parent;
-const isParent = p => p.parents;
-const getFirstAndLast = p => p.firstName + ' ' + p.lastName;
-const hasSpouse = (spouse, person) => person.id === spouse;
-const hasChildren = (id, person) => person.parents[0] === id || person.parents[1] === id;
-start();
-const lastNameMatches = persons.filter(p => hasLastName(name[1], p));
-const person = lastNameMatches.filter(p => hasFirstName(name[0], p));
-const family = p => {
+const hasLastName = (element, object) => object.lastName === element;
+const hasFirstName = (element, object) => object.firstName === element;
+const hasGender = (element, object) => object.gender === element;
+const hasHeight = (element, object) => object.height === element;
+const hasWeight = (element, object) => object.weight === element;
+const hasEyeColor = (element, object) => object.eyeColor === element;
+const hasOccupation = (element, object) => object.occupation === element;
+const hasSameParent = (element, object) => object.parents[0] == element || object.parents[1] == element;
+const hasParentId = (element, object) => object.id == element;
+const isParent = object => object.parents;
+const getFirstAndLast = object => object.firstName + ' ' + object.lastName;
+const hasSpouse = (element, object) => object.id === element;
+const hasChildren = (element, object) => object.parents[0] === element || object.parents[1] === element;
+const lastNameMatches = (element, objects) => objects.filter(object => hasLastName(element, object));
+const person = (element, objects) => objects.filter(object => hasFirstName(element, object));
+const family = object => {
     let family = [];
-    family.parents = parents(p);
-    family.siblings = siblings(p);
-    family.spouse = spouse(p);
-    family.children = children(p);
+    family.parents = parents(object);
+    family.siblings = siblings(object);
+    family.spouse = spouse(object);
+    family.children = children(object);
     return family;
 };
-const parents = p => {
-    let id = p.map(isParent).toString().split(',');
+const parents = object => {
+    let id = object.map(isParent(object)).toString().split(',');
     return persons
       .filter(p => hasParentId(id[0], p) || hasParentId(id[1], p))
       .map(getFirstAndLast);
@@ -386,13 +384,13 @@ const children = p => {
       .filter(p => hasChildren(id[0], p))
       .map(getFirstAndLast);
 };
-const descendants = person => {
-    let totalDescendants = [];
-    persons
-      .filter(p => p.parents.filter(parent => parent === person.id))
-      .forEach(p => totalDescendants.push(p, descendants(p)));
-
+const descendants = (person, totalDescendants = []) => {
+    console.log(totalDescendants);
+    let kids = persons.map(p => p.parents).filter(parent => parent === person.id);
+    console.log(kids);
+    kids.forEach(descendant => totalDescendants.push(descendant, descendants(descendant, kids)));
     return totalDescendants;
 };
 // console.log(descendants(person));
+start();
 getInput();
