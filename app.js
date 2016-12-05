@@ -288,14 +288,15 @@ const persons = [
 var name;
 var traits;
 function start() {
-    //let inputNumber = "3";
-    let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
+    let inputNumber = "1";
+    //let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     switch (inputNumber) {
         case "1":
-            //name = "Mattias Madden".split(" ");
-            name = prompt("Enter a first and last name to search.")
+            name = "Mattias Madden".split(" ");
+            console.log(name);
+            /*name = prompt("Enter a first and last name to search.")
                 .trim()
-                .split(" ");
+                .split(" ");*/
             break;
         case "2":
             traits = prompt("Please type your search terms, separated by commas:\n");
@@ -311,7 +312,32 @@ function start() {
     //start();
 }
 
-const responder = p => console.log(person); //alert(person.firstName + " " + person.lastName);
+function getInput() {
+    let inputNumber = '2';
+    //let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n4. Search Again");
+    switch (inputNumber) {
+        case '1':
+            break;
+        case '2':
+            //responder(family(person));
+            break;
+        case '3':
+            break;
+        case '4':
+            start();
+            break;
+        default:
+            alert("Invalid Selection!");
+            break;
+    }
+    //getInput();
+}
+
+function responder(object) {
+    console.log(JSON.stringify(object)); //alert(JSON.stringify(object));
+    console.log(family(person));
+}
+
 const hasLastName = (lastName, person) => person.lastName === lastName;
 const hasFirstName = (firstName, person) => person.firstName === firstName;
 const hasGender = (gender, person) => person.gender === gender;
@@ -319,39 +345,52 @@ const hasHeight = (height, person) => person.height === height;
 const hasWeight = (weight, person) => person.weight === weight;
 const hasEyeColor = (eyeColor, person) => person.eyeColor === eyeColor;
 const hasOccupation = (occupation, person) => person.occupation === occupation;
-const hasSameParent = (parent, person) => person.parents[0] === parent || person.parents[1] === parent;
+const hasSameParent = (parent, person) => person.parents[0] == parent || person.parents[1] == parent;
+const isParent = (parent, person) => person.id == parent;
 const hasSpouse = (spouse, person) => person.id === spouse;
 const hasChildren = (id, person) => person.parents[0] === id || person.parents[1] === id;
-const isParent = (parent, person) => person.id === parent[0] || person.id === parent[1];
 start();
 const lastNameMatches = persons.filter(p => hasLastName(name[1], p));
 const person = lastNameMatches.filter(p => hasFirstName(name[0], p));
-
-function getInput() {
-    let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n");
-    switch (inputNumber) {
-        case '1':
-            break;
-        case '2':
-            break;
-        case '3':
-            break;
-        default:
-            alert("Invalid Selection!");
-            break;
-    }
-    getInput();
-}
-const parents = persons.filter(p => isParent(person[0].parents, p));
-const siblings = persons.filter(p => hasSameParent(person[0].parents[0], p) || hasSameParent(person[0].parents[1], p));
-const children = persons.filter(p => hasChildren(person[0].id, p));
-const spouse = persons.filter(p => hasSpouse(person[0].currentSpouse, p));
+const getParents = lastNameMatches.map(p => p.parents);
+const parents = p => {
+    let id = p
+        .map(p => p.parents)
+        .toString()
+        .split(',');
+    return persons
+      .filter(p => isParent(id[0], p) || isParent(id[1], p))
+      .map(p => p.firstName + ' ' + p.lastName);
+};
+const siblings = p => {
+    let id = p
+        .map(p => p.parents)
+        .toString()
+        .split(',');
+    return persons
+      .filter(p => hasSameParent(id[0], p) || hasSameParent(id[1], p))
+      .map(p => p.firstName + ' ' + p.lastName);
+};
+const spouse = p => {
+    let id = p.map(p => p.currentSpouse);
+    return persons
+      .filter(p => hasSpouse(id[0], p))
+      .map(p => p.firstName + ' ' + p.lastName);
+};
+const children = p => {
+    let id = p.map(p => p.id);
+    return persons
+      .filter(p => hasChildren(id[0], p))
+      .map(p => p.firstName + ' ' + p.lastName);
+};
+//const children = persons.filter(p => hasChildren(person.id, p));
+//const spouse = persons.filter(p => hasSpouse(person.currentSpouse, p));
 const family = p => {
     let family = [];
-    family.parents = parents.map(p => p.firstName + ' ' + p.lastName);
-    family.siblings = siblings.map(s => s.firstName + ' ' + s.lastName);
-    family.spouse = spouse.map(s => s.firstName + ' ' + s.lastName);
-    family.children = children.map(c => c.firstName + ' ' + c.lastName);
+    family.parents = parents(p);
+    family.siblings = siblings(p);
+    family.spouse = spouse(p);
+    family.children = children(p);
     return family;
 };
 let descendants = (persons, parents) => {
@@ -359,26 +398,15 @@ let descendants = (persons, parents) => {
     persons.filter(p => p.parents[0] === parents[0].id || p.parents[1] === parents[1].id).forEach(p => totalDescendants[p.id] = descendants(persons, p.parents));
     return totalDescendants;
 };
+getInput();
 
-// function getDescendants(index, personName, totalDescendants) {
-// 	for (var person in dataObject) {
-// 		for (var parent in dataObject[person].parents) {
-// 			if (dataObject[index].id == dataObject[person].parents[parent]) {
-// 				totalDescendants.push(personName(person));
-// 				getDescendants(person, personName, totalDescendants);
-// 			}
-// 		}
-// 	}
-// 	if (totalDescendants.length == 0) {
-// 		totalDescendants.push("None");
-// 	}
-// 	return totalDescendants;
-// }
-//console.log(person);
-//console.log(children);
-// console.log(person);
-// console.log(siblings);
-// console.log(spouse);
+console.log(person);
+// parents(person);
+// console.log(parents(person));
+// console.log(siblings(person));
+// console.log(spouse(person));
+// console.log(children(person));
 console.log(family(person));
-
-const exit = window.exit(0);
+function exit() {
+    window.exit();
+}
