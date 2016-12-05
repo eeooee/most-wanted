@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-const persons = [
+var persons = [
     {
         "id": 272822514,
         "firstName": "Billy",
@@ -293,6 +293,8 @@ function start() {
     switch (inputNumber) {
         case "1":
             name = "Mattias Madden".split(" ");
+            lastNameMatches(name[1]);
+            person(name[0]);
             //name = prompt("Enter a first and last name to search.").split(" ");
             break;
         case "2":
@@ -308,7 +310,6 @@ function start() {
     }
     //start();
 }
-
 function getInput() {
     let inputNumber = '2';
     //let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n4. Search Again");
@@ -331,6 +332,7 @@ function getInput() {
 
 function responder(object) {
     console.log(object);
+    //alert(object.join('\n'));
 }
 
 function exit() {
@@ -345,42 +347,13 @@ const hasWeight = (weight, person) => person.weight === weight;
 const hasEyeColor = (eyeColor, person) => person.eyeColor === eyeColor;
 const hasOccupation = (occupation, person) => person.occupation === occupation;
 const hasSameParent = (parent, person) => person.parents[0] == parent || person.parents[1] == parent;
-const isParent = (parent, person) => person.id == parent;
+const hasParentId = (parent, person) => person.id == parent;
+const isParent = p => p.parents;
+const getFirstAndLast = p => p.firstName + ' ' + p.lastName;
 const hasSpouse = (spouse, person) => person.id === spouse;
 const hasChildren = (id, person) => person.parents[0] === id || person.parents[1] === id;
-start();
-const lastNameMatches = persons.filter(p => hasLastName(name[1], p));
-const person = lastNameMatches.filter(p => hasFirstName(name[0], p));
-const parents = p => {
-    let id = p
-      .map(p => p.parents)
-      .toString()
-      .split(',');
-    return persons
-      .filter(p => isParent(id[0], p) || isParent(id[1], p))
-      .map(p => p.firstName + ' ' + p.lastName);
-};
-const siblings = p => {
-    let id = p
-      .map(p => p.parents)
-      .toString()
-      .split(',');
-    return persons
-      .filter(p => hasSameParent(id[0], p) || hasSameParent(id[1], p))
-      .map(p => p.firstName + ' ' + p.lastName);
-};
-const spouse = p => {
-    let id = p.map(p => p.currentSpouse);
-    return persons
-      .filter(p => hasSpouse(id[0], p))
-      .map(p => p.firstName + ' ' + p.lastName);
-};
-const children = p => {
-    let id = p.map(p => p.id);
-    return persons
-      .filter(p => hasChildren(id[0], p))
-      .map(p => p.firstName + ' ' + p.lastName);
-};
+const lastNameMatches = name => persons.filter(p => hasLastName(name, p));
+const person = name => lastNameMatches.filter(p => hasFirstName(name, p));
 const family = p => {
     let family = [];
     family.parents = parents(p);
@@ -389,9 +362,38 @@ const family = p => {
     family.children = children(p);
     return family;
 };
-let descendants = (persons, parents) => {
-    let totalDescendants = {};
-    persons.filter(p => p.parents[0] === parents[0].id || p.parents[1] === parents[1].id).forEach(p => totalDescendants[p.id] = descendants(persons, p.parents));
+const parents = p => {
+    let id = p.map(isParent).toString().split(',');
+    return persons
+      .filter(p => hasParentId(id[0], p) || hasParentId(id[1], p))
+      .map(getFirstAndLast);
+};
+const siblings = p => {
+    let id = p.map(isParent).toString().split(',');
+    return persons
+      .filter(p => hasSameParent(id[0], p) || hasSameParent(id[1], p))
+      .map(getFirstAndLast);
+};
+const spouse = p => {
+    let id = p.map(p => p.currentSpouse);
+    return persons
+      .filter(p => hasSpouse(id[0], p))
+      .map(getFirstAndLast);
+};
+const children = p => {
+    let id = p.map(p => p.id);
+    return persons
+      .filter(p => hasChildren(id[0], p))
+      .map(getFirstAndLast);
+};
+let descendants = person => {
+    let id = person.map(isParent).toString().split(',');
+    let totalDescendants = [];
+    persons
+      .filter(p => hasSameParent(id[0], p) || hasSameParent(id[1], p))
+      .forEach(p => totalDescendants.push(p), descendants(p));
     return totalDescendants;
 };
+console.log(descendants(person));
+start();
 getInput();
