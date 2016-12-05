@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-var persons = [
+var dataObject = [
     {
         "id": 272822514,
         "firstName": "Billy",
@@ -284,7 +284,7 @@ var persons = [
         "currentSpouse": null
     }
 ];
-const start = (objects) => {
+const start = (objects, findSearchSelection, findMatchingFirstName, findMatchingLastName, exitWindow) => {
     let inputNumber = "1";
     //let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     switch (inputNumber) {
@@ -292,17 +292,17 @@ const start = (objects) => {
             let name = "Mattias Madden".split(' ');
             //let name = 'Ralph Bob'.split(' ');
             //let name = "Joy Madden".split(' ');
-            let person = matchingFirstName(name[0], matchingLastName(name[1], objects));
-            getInput(person[0], objects);
-            //console.log(person);
+            let person = findMatchingFirstName(name[0], findMatchingLastName(name[1], objects));
+            findSearchSelection(person[0], objects, getDescendants, getFamily, getNextOfKin);
             //name = prompt("Enter a first and last name to search.").split(" ");
             break;
         case "2":
             //let traits = prompt("Please type your search terms, separated by commas:\n");
+            findSearchSelection(person[0], objects, getDescendants, getFamily, getNextOfKin);
             break;
         case "3":
             alert("You have exited the most-wanted search.");
-            exit();
+            exitWindow();
             break;
         default:
             alert("Invalid Selection!");
@@ -310,22 +310,20 @@ const start = (objects) => {
     }
     //start();
 };
-const getInput = (object, objects) => {
+const getSearchSelection = (object, objects, findDescendants, findFamily, findNextOfKin) => {
     let inputNumber = '2';
-    //let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n4. Search Again");
+    //let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin");
     switch (inputNumber) {
         case '1':
-            console.log(getDescendants(object, objects, matchingChildren));
+            console.log(findDescendants(object, objects, matchingChildren));
             //responder(getDescendants(object));
             break;
         case '2':
-            console.log(getFamily(object, objects, objectParents, matchingParents, matchingSpouse, matchingChildren, excludeMatchingObject));
+            console.log(findFamily(object, objects, objectParents, matchingParents, matchingSpouse, matchingChildren, excludeMatchingObject));
             //responder(family(person));
             break;
         case '3':
-            break;
-        case '4':
-            start();
+            console.log(findNextOfKin(object, objects));
             break;
         default:
             alert("Invalid Selection!");
@@ -356,24 +354,25 @@ const matchingParents = (parents, objects) => {
 const matchingSpouse = (object, objects) => objects.filter(o => o.id === object.currentSpouse);
 const matchingChildren = (object, objects) => objects.filter(o => o.parents[0] === object.id || o.parents[1] === object.id);
 const excludeMatchingObject = (object, objects) => objects.filter(o => o !== object);
-const getDescendants = (object, objects, findChildren, allDescendants = []) => {
-    let children = findChildren(object, objects);
+const getDescendants = (object, objects, findMatchingChildren, allDescendants = []) => {
+    let children = findMatchingChildren(object, objects);
     if (children.length <= 0) {
         return [];
     }
     children.forEach(child => allDescendants.push(child));
-    children.forEach(child => getDescendants(child, objects, findChildren, allDescendants));
+    children.forEach(child => getDescendants(child, objects, findMatchingChildren, allDescendants));
     return allDescendants;
 };
-const getFamily = (object, objects, findParents, findSiblings, findSpouse, findChildren, findExclude) => {
+const getFamily = (object, objects, findMatchingParents, findMatchingSiblings, findMatchingSpouse, findMatchingChildren, findExclude) => {
     let allFamilyMembers = [];
-    allFamilyMembers.parents = findParents(object);
-    allFamilyMembers.siblings = findSiblings(findParents(object), findExclude(object, objects));
-    allFamilyMembers.spouse = findSpouse(object, objects);
-    allFamilyMembers.children = findChildren(object, objects);
+    let parents = findMatchingParents(object);
+    allFamilyMembers.parents = parents;
+    allFamilyMembers.siblings = findMatchingSiblings(parents, findExclude(object, objects));
+    allFamilyMembers.spouse = findMatchingSpouse(object, objects);
+    allFamilyMembers.children = findMatchingChildren(object, objects);
     return allFamilyMembers;
 };
 const getNextOfKin = (object, objects, nextOfKin = []) => {
     let children = blah;
 };
-start(persons);
+start(dataObject, getSearchSelection, matchingFirstName, matchingLastName, exit);
