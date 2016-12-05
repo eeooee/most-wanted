@@ -288,14 +288,14 @@ const persons = [
 var name;
 var traits;
 function start() {
-    let inputNumber = "1";
-    //inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
+    //let inputNumber = "3";
+    let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     switch (inputNumber) {
         case "1":
-            name = "Mattias Madden".split(" ");
-            // name = prompt("Enter a first and last name to search.")
-            //     .trim()
-            //     .split(" ");
+            //name = "Mattias Madden".split(" ");
+            name = prompt("Enter a first and last name to search.")
+                .trim()
+                .split(" ");
             break;
         case "2":
             traits = prompt("Please type your search terms, separated by commas:\n");
@@ -311,15 +311,7 @@ function start() {
     //start();
 }
 
-function responder(person) {
-    console.log(person);
-    //alert(person.firstName + " " + person.lastName);
-}
-
-function exit() {
-    window.exit(0);
-}
-
+const responder = p => console.log(person); //alert(person.firstName + " " + person.lastName);
 const hasLastName = (lastName, person) => person.lastName === lastName;
 const hasFirstName = (firstName, person) => person.firstName === firstName;
 const hasGender = (gender, person) => person.gender === gender;
@@ -329,29 +321,64 @@ const hasEyeColor = (eyeColor, person) => person.eyeColor === eyeColor;
 const hasOccupation = (occupation, person) => person.occupation === occupation;
 const hasSameParent = (parent, person) => person.parents[0] === parent || person.parents[1] === parent;
 const hasSpouse = (spouse, person) => person.id === spouse;
-const hasChildren = p => p.parents[0] === person[0].id || p.parents[1] === person[0].id;
-const isParent = p => p.id === person[0].parents[0] || p.id === person[0].parents[1];
+const hasChildren = (id, person) => person.parents[0] === id || person.parents[1] === id;
+const isParent = (parent, person) => person.id === parent[0] || person.id === parent[1];
 start();
 const lastNameMatches = persons.filter(p => hasLastName(name[1], p));
 const person = lastNameMatches.filter(p => hasFirstName(name[0], p));
-const parents = persons.filter(p => isParent(p));
+
+function getInput() {
+    let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n");
+    switch (inputNumber) {
+        case '1':
+            break;
+        case '2':
+            break;
+        case '3':
+            break;
+        default:
+            alert("Invalid Selection!");
+            break;
+    }
+    getInput();
+}
+const parents = persons.filter(p => isParent(person[0].parents, p));
 const siblings = persons.filter(p => hasSameParent(person[0].parents[0], p) || hasSameParent(person[0].parents[1], p));
-const children = persons.filter(p => hasChildren(p));
+const children = persons.filter(p => hasChildren(person[0].id, p));
 const spouse = persons.filter(p => hasSpouse(person[0].currentSpouse, p));
 const family = p => {
-  let family = [];
-  family.parents = (parents.map(p => p.firstName + ' ' + p.lastName));
-  family.siblings = (siblings.map(s => s.firstName + ' ' + s.lastName));
-  family.spouse = (spouse.map(s => s.firstName + ' ' + s.lastName));
-  family.children = (children.map(c => c.firstName + ' ' + c.lastName));
-  return family;
+    let family = [];
+    family.parents = parents.map(p => p.firstName + ' ' + p.lastName);
+    family.siblings = siblings.map(s => s.firstName + ' ' + s.lastName);
+    family.spouse = spouse.map(s => s.firstName + ' ' + s.lastName);
+    family.children = children.map(c => c.firstName + ' ' + c.lastName);
+    return family;
+};
+let descendants = (persons, parents) => {
+    let totalDescendants = {};
+    persons.filter(p => p.parents[0] === parents[0].id || p.parents[1] === parents[1].id).forEach(p => totalDescendants[p.id] = descendants(persons, p.parents));
+    return totalDescendants;
 };
 
-//input = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n");
+// function getDescendants(index, personName, totalDescendants) {
+// 	for (var person in dataObject) {
+// 		for (var parent in dataObject[person].parents) {
+// 			if (dataObject[index].id == dataObject[person].parents[parent]) {
+// 				totalDescendants.push(personName(person));
+// 				getDescendants(person, personName, totalDescendants);
+// 			}
+// 		}
+// 	}
+// 	if (totalDescendants.length == 0) {
+// 		totalDescendants.push("None");
+// 	}
+// 	return totalDescendants;
+// }
 //console.log(person);
 //console.log(children);
 // console.log(person);
 // console.log(siblings);
 // console.log(spouse);
 console.log(family(person));
-//console.log(family(person));
+
+const exit = window.exit(0);
