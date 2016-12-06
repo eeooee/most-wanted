@@ -1,3 +1,4 @@
+conflict
 /*jshint esversion: 6 */
 var dataObject = [{
     "id": 272822514,
@@ -405,6 +406,7 @@ const getNextOfKin =
         sortByAge(nextOfKin.grandParents.forEach(object => nextOfKin.greatGrandParents.push(...getParents(object, objects))));
         return nextOfKin;
     };
+
 const getRelatives =
     (object, objects, association, relatives = []) => {
         if (object.length <= 0)
