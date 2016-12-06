@@ -411,7 +411,6 @@ const getRelatives =
             return [];
         object.forEach(object =>
             relatives.push(...objects.filter(o => association(object, o))));
-        // results.forEach(result => relatives.push(result));
         return relatives;
     };
 
