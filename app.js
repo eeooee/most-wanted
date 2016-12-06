@@ -396,8 +396,8 @@ const getNextOfKin =
         nextOfKin.children = family.children;
         nextOfKin.parents = family.parents;
         nextOfKin.siblings = family.siblings;
-        //nextOfKin.grandChildren = getRelatives(nextOfKin.children, objects, isChildren);
-        // nextOfKin.grandParents = findRelatives(nextOfKin.parents, objects, isParent);
+        nextOfKin.grandChildren = getRelatives(nextOfKin.children, objects, isChildren);
+        //nextOfKin.grandParents = findRelatives(nextOfKin.parents, objects, isParent);
         // nextOfKin.siblingsChildren = findRelatives(nextOfKin.siblings, objects, findMatchingSiblings);
         // nextOfKin.parentsSiblings = findRelatives(nextOfKin.parents, objects, findMatchingSiblings);
         // nextOfKin.greatGrandChildren = findRelatives(nextOfKin.grandChildren, objects, isChildren);
@@ -406,10 +406,10 @@ const getNextOfKin =
     };
 const getRelatives =
     (object, objects, association, relatives = []) => {
-        if (objects.length <= 0)
+        if (object.length <= 0)
             return [];
-        let results = object.filter(o => association(o, objects));
-        console.log(results);
+        object.forEach(object =>
+            relatives.push(...objects.filter(o => association(object, o))));
         // results.forEach(result => relatives.push(result));
         return relatives;
     };
