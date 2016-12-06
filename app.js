@@ -323,7 +323,7 @@ const getSearchSelection = (object, objects, findDescendants, findFamily, findNe
             //responder(family(person));
             break;
         case '3':
-            console.log(findNextOfKin(object, objects, objectParents, matchingParents, matchingSpouse, matchingChildren));
+            console.log(findNextOfKin(object, objects, objectParents, matchingParents, matchingSpouse, matchingChildren, getRelatives, excludeMatchingObject, findFamily));
             break;
         default:
             alert("Invalid Selection!");
@@ -340,7 +340,11 @@ const exit = () => window.exit();
 // const matchingParentId = (element, object) => object === element;
 const matchingLastName = (element, objects) => objects.filter(o => o.lastName === element);
 const matchingFirstName = (element, objects) => objects.filter(o => o.firstName === element);
-const objectParents = object => object.parents;
+const objectParents = object => {
+    if (object.length <= 0)
+        return [];
+    return object.parents;
+};
 // const onlyFirstAndLast = object => object.firstName + ' ' + object.lastName;
 const matchingParents = (parents, objects) => {
     if (parents.length <= 0)
@@ -369,22 +373,28 @@ const getFamily = (object, objects, findMatchingParents, findMatchingSiblings, f
     allFamilyMembers.children = findMatchingChildren(object, objects);
     return allFamilyMembers;
 };
-const getNextOfKin = (object, objects, findMatchingParents, findMatchingSiblings, findMatchingSpouse, findMatchingChildren, nextOfKin = []) => {
-    nextOfKin.spouse = findMatchingSpouse(object, objects);
-    nextOfKin.children = findMatchingChildren(object, objects);
-    nextOfKin.parents = findMatchingParents(object);
-    nextOfKin.siblings = findMatchingSiblings(nextOfKin.parents, objects);
-    nextOfKin.grandChildren = getRelatives(nextOfKin.children, objects, findMatchingChildren);
-    //nextOfKin.grandParents = getRelatives(nextOfKin.parents, objects, findMatchingParents);
-    //nextOfKin.siblingsChildren = getRelatives(nextOfKin.siblings, objects, findMatchingSiblings);
-    //nextOfKin.parentsSiblings = getRelatives(nextOfKin.parents, objects, findMatchingSiblings);
-    //nextOfKin.greatGrandChildren = getRelatives(nextOfKin.grandChildren, objects, findMatchingChildren);
-    //nextOfKin.greatGrandParents = getRelatives(nextOfKin.grandParents, objects, findMatchingParents);
+const getNextOfKin = (object, objects, findMatchingParents, findMatchingSiblings, findMatchingSpouse, findMatchingChildren, findRelatives, findExclude, matchFamily, nextOfKin = []) => {
+    let family = matchFamily(object, objects, findMatchingParents, findMatchingSiblings, findMatchingSpouse, findMatchingChildren, findExclude);
+    // nextOfKin.spouse = family.spouse;
+    nextOfKin.children = family.children;
+    // nextOfKin.parents = family.parents;
+    // nextOfKin.siblings = family.siblings;
+    nextOfKin.grandChildren = findRelatives(nextOfKin.children, objects, findMatchingChildren);
+    // nextOfKin.grandParents = findRelatives(nextOfKin.parents, objects, findMatchingParents);
+    // nextOfKin.siblingsChildren = findRelatives(nextOfKin.siblings, objects, findMatchingSiblings);
+    // nextOfKin.parentsSiblings = findRelatives(nextOfKin.parents, objects, findMatchingSiblings);
+    // nextOfKin.greatGrandChildren = findRelatives(nextOfKin.grandChildren, objects, findMatchingChildren);
+    // nextOfKin.greatGrandParents = findRelatives(nextOfKin.grandParents, objects, findMatchingParents);
     return nextOfKin;
 };
-const getRelatives = (object, objects, association) => {
-    if (object.length <= 0)
+const getRelatives = (object, objects, association, relatives = []) => {
+    if (objects.length <= 0)
         return [];
-    return object.forEach(o => association(o, objects));
+    let results = object.filter(o => association(o, objects));
+    console.log(results);
+    // results.forEach(result => relatives.push(result));
+    return relatives;
 };
+
+const compareAge = o => {};
 start(dataObject, getSearchSelection, matchingFirstName, matchingLastName, exit);
