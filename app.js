@@ -282,7 +282,7 @@ var dataObject = [{
     ],
     "currentSpouse": null
 }];
-const start = (objects, findSearchSelection, findMatchingFirstName, findMatchingLastName, exitWindow) => {
+const start = (objects, getUserSelection, matchingFirstName, matchingLastName, exit) => {
     let inputNumber = "1";
     //let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     switch (inputNumber) {
@@ -290,17 +290,16 @@ const start = (objects, findSearchSelection, findMatchingFirstName, findMatching
         //let name = "Mattias Madden".split(' ');
         //let name = 'Ralph Bob'.split(' ');
         let name = "Joy Madden".split(' ');
-        let person = findMatchingFirstName(name[0], findMatchingLastName(name[1], objects, isLastName), isFirstName);
-        findSearchSelection(person[0], objects, getDescendants, getFamily, getNextOfKin);
+        let person = matchingFirstName(name[0], matchingLastName(name[1], objects, isLastName), isFirstName);
+        getUserSelection(person[0], objects, getDescendants, getFamily, getNextOfKin);
         //name = prompt("Enter a first and last name to search.").split(" ");
         break;
     case "2":
         //let traits = prompt("Please type your search terms, separated by commas:\n");
-        findSearchSelection(person[0], objects, getDescendants, getFamily, getNextOfKin);
         break;
     case "3":
         alert("You have exited the most-wanted search.");
-        exitWindow();
+        exit();
         break;
     default:
         alert("Invalid Selection!");
@@ -308,20 +307,20 @@ const start = (objects, findSearchSelection, findMatchingFirstName, findMatching
     }
     //start();
 };
-const getSearchSelection = (object, objects, findDescendants, findFamily, findNextOfKin) => {
+const getUserSelection = (object, objects, getDescendants, getFamily, getNextOfKin) => {
     let inputNumber = '3';
     //let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin");
     switch (inputNumber) {
     case '1':
-        console.log(findDescendants(object, objects, matchingChildren));
+        console.log(getDescendants(object, objects, isChildren, matchingChildren));
         //responder(getDescendants(object));
         break;
     case '2':
-        console.log(findFamily(object, objects, objectParents, matchingParents, matchingSpouse, matchingChildren, excludeMatchingObject));
+        console.log(getFamily(object, objects, getParents, isParent, matchingParents, isSpouse, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects));
         //responder(family(person));
         break;
     case '3':
-        console.log(findNextOfKin(object, objects, objectParents, matchingParents, matchingSpouse, matchingChildren, getRelatives, excludeMatchingObject, findFamily));
+        console.log(getNextOfKin(object, objects, getParents, isParent, matchingParents, isSpouse, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily));
         break;
     default:
         alert("Invalid Selection!");
@@ -336,81 +335,84 @@ const exit = () => window.exit();
 // const matchingEyeColor = (element, object) => object.eyeColor === element;
 // const matchingOccupation = (element, object) => object.occupation === element;
 // const matchingParentId = (element, object) => object === element;
-const matchingLastName = (element, objects, hasLastName) =>
-    objects.filter(o => hasLastName(element, o));
-const matchingFirstName = (element, objects, hasFirstName) =>
-    objects.filter(o => hasFirstName(element, o));
 const isLastName = (element, object) => element === object.lastName;
+const matchingLastName = (element, objects, isLastName) =>
+    objects.filter(o => isLastName(element, o));
 const isFirstName = (element, object) => element === object.firstName;
-const objectParents = object => {
+const matchingFirstName = (element, objects, isFirstName) =>
+    objects.filter(o => isFirstName(element, o));
+const getParents = object => {
     if (object.length <= 0)
         return [];
     return object.parents;
 };
-const matchingParents = (parents, objects) => {
+const isParent = (element, indexOfElement, parents, indexOfParent) =>
+    element[indexOfElement] === parents[indexOfParent];
+const matchingParents = (parents, objects, isParent) => {
     if (parents.length <= 0)
         return [];
     if (parents.length == 1)
-        return objects.filter(o => isParent(o.parents, parents, 0, 0));
-    return objects.filter(o =>
-        isParent(o.parents, parents, 0, 0) ||
-        isParent(o.parents, parents, 0, 1) ||
-        isParent(o.parents, parents, 1, 0) ||
-        isParent(o.parents, parents, 1, 1));
+        return objects.filter(object => isParent(object.parents, parents, 0, 0));
+    return objects.filter(object =>
+        isParent(object.parents, 0, parents, 0) ||
+        isParent(object.parents, 0, parents, 1) ||
+        isParent(object.parents, 1, parents, 0) ||
+        isParent(object.parents, 1, parents, 1));
 };
-const isParent = (element, parents, firstParent, secondParent) =>
-    element[firstParent] === parents[secondParent];
-const matchingSpouse = (element, objects, hasSpouse) =>
-    objects.filter(object => hasSpouse(element, object));
 const isSpouse = (element, object) =>
-    object.id === element.currentSpouse;
-const matchingChildren = (element, objects, hasChildren) =>
-    objects.filter(object => isChildren(element, object));
+    element.currentSpouse === object.id;
+const matchingSpouse = (element, objects, isSpouse) =>
+    objects.filter(object => isSpouse(element, object));
 const isChildren = (element, object) =>
     object.parents[0] === element.id ||
     object.parents[1] === element.id;
-const excludeMatchingObject = (element, objects, notObject) =>
-    objects.filter(object => notObject(element, object));
+const matchingChildren = (element, objects, isChildren) =>
+    objects.filter(object => isChildren(element, object));
 const isNotObject = (element, object) => object !== element;
-const getDescendants = (object, objects, findMatchingChildren, allDescendants = []) => {
-    let children = findMatchingChildren(object, objects);
-    if (children.length <= 0)
-        return [];
-    children.forEach(child => allDescendants.push(child));
-    children.forEach(child => getDescendants(child, objects, findMatchingChildren, allDescendants));
-    return allDescendants;
-};
-const getFamily = (object, objects, findMatchingParents, findMatchingSiblings, findMatchingSpouse, findMatchingChildren, findExclude) => {
-    let allFamilyMembers = [];
-    let parents = findMatchingParents(object);
-    allFamilyMembers.parents = parents;
-    allFamilyMembers.siblings = findMatchingSiblings(parents, findExclude(object, objects));
-    allFamilyMembers.spouse = findMatchingSpouse(object, objects);
-    allFamilyMembers.children = findMatchingChildren(object, objects);
-    return allFamilyMembers;
-};
-const getNextOfKin = (object, objects, findMatchingParents, findMatchingSiblings, findMatchingSpouse, findMatchingChildren, findRelatives, findExclude, matchFamily, nextOfKin = []) => {
-    let family = matchFamily(object, objects, findMatchingParents, findMatchingSiblings, findMatchingSpouse, findMatchingChildren, findExclude);
-    // nextOfKin.spouse = family.spouse;
-    nextOfKin.children = family.children;
-    // nextOfKin.parents = family.parents;
-    // nextOfKin.siblings = family.siblings;
-    nextOfKin.grandChildren = findRelatives(nextOfKin.children, objects, findMatchingChildren);
-    // nextOfKin.grandParents = findRelatives(nextOfKin.parents, objects, findMatchingParents);
-    // nextOfKin.siblingsChildren = findRelatives(nextOfKin.siblings, objects, findMatchingSiblings);
-    // nextOfKin.parentsSiblings = findRelatives(nextOfKin.parents, objects, findMatchingSiblings);
-    // nextOfKin.greatGrandChildren = findRelatives(nextOfKin.grandChildren, objects, findMatchingChildren);
-    // nextOfKin.greatGrandParents = findRelatives(nextOfKin.grandParents, objects, findMatchingParents);
-    return nextOfKin;
-};
-const getRelatives = (object, objects, association, relatives = []) => {
-    if (objects.length <= 0)
-        return [];
-    let results = object.filter(o => association(o, objects));
-    console.log(results);
-    // results.forEach(result => relatives.push(result));
-    return relatives;
-};
+const excludeMatchingObjects = (element, objects, isNotObject) =>
+    objects.filter(object => isNotObject(element, object));
+
+const getDescendants =
+    (object, objects, isChildren, matchingChildren, allDescendants = []) => {
+        let children = matchingChildren(object, objects, isChildren);
+        if (children.length <= 0)
+            return [];
+        children.forEach(child => allDescendants.push(child));
+        children.forEach(child => getDescendants(child, objects, isChildren, matchingChildren, allDescendants));
+        return allDescendants;
+    };
+const getFamily =
+    (object, objects, getParents, isParent, matchingParents, isSpouse, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects, allFamilyMembers = []) => {
+        allFamilyMembers.spouse = matchingSpouse(object, objects, isSpouse);
+        allFamilyMembers.children = matchingChildren(object, objects, isChildren);
+        allFamilyMembers.parents = getParents(object);
+        allFamilyMembers.siblings = matchingParents(allFamilyMembers.parents, excludeMatchingObjects(object, objects, isNotObject), isParent);
+        return allFamilyMembers;
+    };
+const getNextOfKin =
+    (object, objects, getParents, isParent, matchingParents, isSpouse, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, nextOfKin = []) => {
+        let family = getFamily(object, objects, getParents, isParent, matchingParents, isSpouse, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects);
+        nextOfKin.spouse = family.spouse;
+        nextOfKin.children = family.children;
+        nextOfKin.parents = family.parents;
+        nextOfKin.siblings = family.siblings;
+        //nextOfKin.grandChildren = getRelatives(nextOfKin.children, objects, isChildren);
+        // nextOfKin.grandParents = findRelatives(nextOfKin.parents, objects, isParent);
+        // nextOfKin.siblingsChildren = findRelatives(nextOfKin.siblings, objects, findMatchingSiblings);
+        // nextOfKin.parentsSiblings = findRelatives(nextOfKin.parents, objects, findMatchingSiblings);
+        // nextOfKin.greatGrandChildren = findRelatives(nextOfKin.grandChildren, objects, isChildren);
+        // nextOfKin.greatGrandParents = findRelatives(nextOfKin.grandParents, objects, isParent);
+        return nextOfKin;
+    };
+const getRelatives =
+    (object, objects, association, relatives = []) => {
+        if (objects.length <= 0)
+            return [];
+        let results = object.filter(o => association(o, objects));
+        console.log(results);
+        // results.forEach(result => relatives.push(result));
+        return relatives;
+    };
 
 const compareAge = o => {};
-start(dataObject, getSearchSelection, matchingFirstName, matchingLastName, exit);
+start(dataObject, getUserSelection, matchingFirstName, matchingLastName, exit);
