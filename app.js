@@ -323,7 +323,7 @@ const getSearchSelection = (object, objects, findDescendants, findFamily, findNe
             //responder(family(person));
             break;
         case '3':
-            console.log(findNextOfKin(object, objects, matchingSpouse, matchingChildren, objectParents, matchingParents));
+            console.log(findNextOfKin(object, objects, objectParents, matchingParents, matchingSpouse, matchingChildren));
             break;
         default:
             alert("Invalid Selection!");
@@ -369,11 +369,11 @@ const getFamily = (object, objects, findMatchingParents, findMatchingSiblings, f
     allFamilyMembers.children = findMatchingChildren(object, objects);
     return allFamilyMembers;
 };
-const getNextOfKin = (object, objects, findSpouse, findMatchingChildren, findMatchingParents, findMatchingSiblings, nextOfKin = []) => {
-    nextOfKin.spouse = findSpouse(object, objects);
+const getNextOfKin = (object, objects, findMatchingParents, findMatchingSiblings, findMatchingSpouse, findMatchingChildren, nextOfKin = []) => {
+    nextOfKin.spouse = findMatchingSpouse(object, objects);
     nextOfKin.children = findMatchingChildren(object, objects);
     nextOfKin.parents = findMatchingParents(object);
-    nextOfKin.siblings = findMatchingSiblings(object, objects);
+    nextOfKin.siblings = findMatchingSiblings(nextOfKin.parents, objects);
     nextOfKin.grandChildren = getRelatives(nextOfKin.children, objects, findMatchingChildren);
     //nextOfKin.grandParents = getRelatives(nextOfKin.parents, objects, findMatchingParents);
     //nextOfKin.siblingsChildren = getRelatives(nextOfKin.siblings, objects, findMatchingSiblings);
