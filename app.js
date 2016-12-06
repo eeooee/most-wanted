@@ -287,8 +287,8 @@ const start = (objects, getUserSelection, matchingFirstName, matchingLastName, e
     //let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     switch (inputNumber) {
         case "1":
-            //let name = "Mattias Madden".split(' ');
-            let name = 'Joy Madden'.split(' ');
+            let name = "Mattias Madden".split(' ');
+            //let name = 'Joy Madden'.split(' ');
             //let name = "Eloise Madden".split(' ');
             //let name = 'Joey Madden'.split(' ');
             let person = matchingFirstName(name[0], matchingLastName(name[1], objects, isLastName), isFirstName);
@@ -392,6 +392,7 @@ const getNextOfKin =
     (object, objects, getParents, isParent, matchingParents, isSpouse, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, nextOfKin = []) => {
         let family = getFamily(object, objects, getParents, isParent, matchingParents, isSpouse, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects);
         nextOfKin.spouse = family.spouse;
+        var deetz = getDetails(nextOfKin.spouse, "Spouse", []);
         nextOfKin.children = sortByAge(family.children);
         nextOfKin.parents = sortByAge(family.parents);
         nextOfKin.siblings = sortByAge(family.siblings);
@@ -415,9 +416,23 @@ const getRelatives =
         return relatives;
     };
 
-const sortByAge = personArray => personArray.sort((a, b) =>
-    Date.parse(a.dob) - Date.parse(b.dob)
-);
+const sortByAge = personArray => {
+    if (personArray !== undefined)
+        personArray.sort((a, b) =>
+            Date.parse(a.dob) - Date.parse(b.dob)
+        );
+};
+
+const getDetails = (people, label, keys) => {
+    let string = label + ":\n";
+    people.forEach(person => {
+        string += person.firstName + " " + person.lastName + "\n";
+        keys.forEach(o => string += o + ": " + person[o] + "\n");
+    });
+    return string;
+};
+
+start(dataObject, getUserSelection, matchingFirstName, matchingLastName, exit);
 
 
 start(dataObject, getUserSelection, matchingFirstName, matchingLastName, exit);
