@@ -421,8 +421,15 @@ const getRelatives =
         return relatives;
     };
 const sortByAge = personArray => {
-    if (personArray === undefined)
-        return [];
-    return personArray.sort((a, b) => Date.parse(a.dob) - Date.parse(b.dob));
+    if (personArray !== undefined)
+        return personArray.sort((a, b) => Date.parse(a.dob) - Date.parse(b.dob));
+};
+const getDetails = (people, label, keys) => {
+    let string = label + ":\n";
+    people.forEach(person => {
+        string += person.firstName + " " + person.lastName + "\n";
+        keys.forEach(o => string += o + ": " + person[o] + "\n");
+    });
+    return string;
 };
 start(dataObject, getUserSelection, matchingFirstName, matchingLastName, exit);
