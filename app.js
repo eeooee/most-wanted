@@ -153,9 +153,7 @@ var dataObject = [{
     "weight": 156,
     "eyeColor": "blue",
     "occupation": "assistant",
-    "parents": [
-        409574486, 260451248
-    ],
+    "parents": [409574486, 260451248],
     "currentSpouse": 951747547
 }, {
     "id": 348457184,
@@ -167,9 +165,7 @@ var dataObject = [{
     "weight": 235,
     "eyeColor": "hazel",
     "occupation": "landscaper",
-    "parents": [
-        629807187, 464142841
-    ],
+    "parents": [629807187, 464142841],
     "currentSpouse": null
 }, {
     "id": 294874671,
@@ -181,9 +177,7 @@ var dataObject = [{
     "weight": 112,
     "eyeColor": "green",
     "occupation": "doctor",
-    "parents": [
-        629807187, 464142841
-    ],
+    "parents": [629807187, 464142841],
     "currentSpouse": 878013758
 }, {
     "id": 931247228,
@@ -195,9 +189,7 @@ var dataObject = [{
     "weight": 184,
     "eyeColor": "brown",
     "occupation": "landscaper",
-    "parents": [
-        629807187, 464142841
-    ],
+    "parents": [629807187, 464142841],
     "currentSpouse": null
 }, {
     "id": 822843554,
@@ -209,9 +201,7 @@ var dataObject = [{
     "weight": 249,
     "eyeColor": "brown",
     "occupation": "nurse",
-    "parents": [
-        693243224, 888201200
-    ],
+    "parents": [693243224, 888201200],
     "currentSpouse": null
 }, {
     "id": 819168108,
@@ -223,9 +213,7 @@ var dataObject = [{
     "weight": 187,
     "eyeColor": "brown",
     "occupation": "politician",
-    "parents": [
-        693243224, 888201200
-    ],
+    "parents": [693243224, 888201200],
     "currentSpouse": null
 }, {
     "id": 969837479,
@@ -237,9 +225,7 @@ var dataObject = [{
     "weight": 241,
     "eyeColor": "brown",
     "occupation": "assistant",
-    "parents": [
-        693243224, 888201200
-    ],
+    "parents": [693243224, 888201200],
     "currentSpouse": null
 }, {
     "id": 313207561,
@@ -251,9 +237,7 @@ var dataObject = [{
     "weight": 110,
     "eyeColor": "blue",
     "occupation": "assistant",
-    "parents": [
-        693243224, 888201200
-    ],
+    "parents": [693243224, 888201200],
     "currentSpouse": 313997561
 }, {
     "id": 313997561,
@@ -277,34 +261,32 @@ var dataObject = [{
     "weight": 100,
     "eyeColor": "blue",
     "occupation": "doctor",
-    "parents": [
-        313207561, 313997561
-    ],
+    "parents": [313207561, 313997561],
     "currentSpouse": null
 }];
 const start = (objects, getUserSelection, matchingFirstName, matchingLastName, exit) => {
     let inputNumber = "1";
     //let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     switch (inputNumber) {
-        case "1":
-            //let name = "Mattias Madden".split(' ');
-            let name = 'Joy Madden'.split(' ');
-            //let name = "Eloise Madden".split(' ');
-            //let name = 'Joey Madden'.split(' ');
-            let person = matchingFirstName(name[0], matchingLastName(name[1], objects, isLastName), isFirstName);
-            getUserSelection(person[0], objects, getDescendants, getFamily, getNextOfKin);
-            //name = prompt("Enter a first and last name to search.").split(" ");
-            break;
-        case "2":
-            //let traits = prompt("Please type your search terms, separated by commas:\n");
-            break;
-        case "3":
-            alert("You have exited the most-wanted search.");
-            exit();
-            break;
-        default:
-            alert("Invalid Selection!");
-            break;
+    case "1":
+        //let name = "Mattias Madden".split(' ');
+        let name = 'Joy Madden'.split(' ');
+        //let name = "Eloise Madden".split(' ');
+        //let name = 'Joey Madden'.split(' ');
+        let person = matchingFirstName(name[0], matchingLastName(name[1], objects, isLastName), isFirstName);
+        getUserSelection(person[0], objects, getDescendants, getFamily, getNextOfKin);
+        //name = prompt("Enter a first and last name to search.").split(" ");
+        break;
+    case "2":
+        //let traits = prompt("Please type your search terms, separated by commas:\n");
+        break;
+    case "3":
+        alert("You have exited the most-wanted search.");
+        exit();
+        break;
+    default:
+        alert("Invalid Selection!");
+        break;
     }
     //start();
 };
@@ -312,20 +294,20 @@ const getUserSelection = (object, objects, getDescendants, getFamily, getNextOfK
     let inputNumber = '3';
     //let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin");
     switch (inputNumber) {
-        case '1':
-            console.log(getDescendants(object, objects, isChildren, matchingChildren));
-            //responder(getDescendants(object));
-            break;
-        case '2':
-            console.log(getFamily(object, objects, getParents, isParent, matchingParents, isSpouse, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects));
-            //responder(family(person));
-            break;
-        case '3':
-            console.log(getNextOfKin(object, objects, getParents, isParent, matchingParents, isSpouse, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily));
-            break;
-        default:
-            alert("Invalid Selection!");
-            break;
+    case '1':
+        console.log(getDescendants(object, objects, isChildren, matchingChildren));
+        //responder(getDescendants(object));
+        break;
+    case '2':
+        console.log(getFamily(object, objects, getParents, isParent, matchingParents, isSpouse, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects));
+        //responder(family(person));
+        break;
+    case '3':
+        console.log(getNextOfKin(object, objects, getParents, isParent, matchingParents, isSpouse, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily));
+        break;
+    default:
+        alert("Invalid Selection!");
+        break;
     }
 };
 const responder = (object) => console.log(object); //alert(object);
