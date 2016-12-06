@@ -336,11 +336,9 @@ const exit = () => window.exit();
 // const matchingEyeColor = (element, object) => object.eyeColor === element;
 // const matchingOccupation = (element, object) => object.occupation === element;
 // const matchingParentId = (element, object) => object === element;
-const matchingLastName =
-    (element, objects, hasLastName) =>
+const matchingLastName = (element, objects, hasLastName) =>
     objects.filter(o => hasLastName(element, o));
-const matchingFirstName =
-    (element, objects, hasFirstName) =>
+const matchingFirstName = (element, objects, hasFirstName) =>
     objects.filter(o => hasFirstName(element, o));
 const isLastName = (element, object) => element === object.lastName;
 const isFirstName = (element, object) => element === object.firstName;
@@ -349,7 +347,6 @@ const objectParents = object => {
         return [];
     return object.parents;
 };
-// const onlyFirstAndLast = object => object.firstName + ' ' + object.lastName;
 const matchingParents = (parents, objects) => {
     if (parents.length <= 0)
         return [];
@@ -361,12 +358,10 @@ const matchingParents = (parents, objects) => {
         isParent(o.parents, parents, 1, 0) ||
         isParent(o.parents, parents, 1, 1));
 };
-
 const isParent = (element, parents, firstParent, secondParent) =>
     element[firstParent] === parents[secondParent];
-const matchingSpouse =
-    (element, objects) =>
-    objects.filter(object => isSpouse(element, object));
+const matchingSpouse = (element, objects, hasSpouse) =>
+    objects.filter(object => hasSpouse(element, object));
 const isSpouse = (element, object) =>
     object.id === element.currentSpouse;
 const matchingChildren = (element, objects, hasChildren) =>
