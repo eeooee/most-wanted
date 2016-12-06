@@ -1,4 +1,3 @@
-conflict
 /*jshint esversion: 6 */
 var dataObject = [{
     "id": 272822514,
