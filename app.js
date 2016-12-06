@@ -330,12 +330,12 @@ const getUserSelection = (object, objects, getDescendants, getFamily, getNextOfK
 };
 const responder = (object) => console.log(object); //alert(object);
 const exit = () => window.exit();
-// const matchingGender = (element, object) => object.gender === element;
-// const matchingHeight = (element, object) => object.height === element;
-// const matchingWeight = (element, object) => object.weight === element;
-// const matchingEyeColor = (element, object) => object.eyeColor === element;
-// const matchingOccupation = (element, object) => object.occupation === element;
-// const matchingParentId = (element, object) => object === element;
+// const isGender = (element, object) => object.gender === element;
+// const isHeight = (element, object) => object.height === element;
+// const isWeight = (element, object) => object.weight === element;
+// const isEyeColor = (element, object) => object.eyeColor === element;
+// const isOccupation = (element, object) => object.occupation === element;
+// const isParentId = (element, object) => object === element;
 const isLastName = (element, object) => element === object.lastName;
 const matchingLastName = (element, objects, isLastName) =>
     objects.filter(o => isLastName(element, o));
@@ -371,7 +371,6 @@ const matchingChildren = (element, objects, isChildren) =>
 const isNotObject = (element, object) => object !== element;
 const excludeMatchingObjects = (element, objects, isNotObject) =>
     objects.filter(object => isNotObject(element, object));
-
 const getDescendants =
     (object, objects, isChildren, matchingChildren, allDescendants = []) => {
         let children = matchingChildren(object, objects, isChildren);
@@ -406,8 +405,6 @@ const getNextOfKin =
         nextOfKin.grandParents.forEach(object => nextOfKin.greatGrandParents.push(...getParents(object, objects)));
         return nextOfKin;
     };
-
-const tryFamily = (parent, peopleToCompare) => peopleToCompare.parents[0] === parent || peopleToCompare.parents[1];
 const getRelatives =
     (object, objects, association, relatives = []) => {
         if (object.length <= 0)
