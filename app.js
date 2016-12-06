@@ -273,12 +273,25 @@ const start = (objects, getUserSelection, matchingFirstName, matchingLastName, e
         let name = 'Joy Madden'.split(' ');
         //let name = "Eloise Madden".split(' ');
         //let name = 'Joey Madden'.split(' ');
+        //let name = prompt("Enter a first and last name to search.").split(" ");
         let person = matchingFirstName(name[0], matchingLastName(name[1], objects, isLastName), isFirstName);
         getUserSelection(person[0], objects, getDescendants, getFamily, getNextOfKin);
-        //name = prompt("Enter a first and last name to search.").split(" ");
         break;
     case "2":
-        //let traits = prompt("Please type your search terms, separated by commas:\n");
+        let traits = [];
+        //let traits = alert("Please type your search terms, separated by commas:\n")
+        traits = prompt('Enter a gender?');
+        let results = matchingGender(traits[0], objects, isGender);
+        traits = prompt('Enter an age or age range (#-#).');
+        results = matchingAge(traits[1], results, isAge);
+        traits = prompt('Enter a hegiht.');
+        results = matchingHeight(traits[2], results, isHeight);
+        traits = prompt('Enter a weight.');
+        results = matchingWeight(traits[3], results, isWeight);
+        traits = prompt('Enter an occupation.');
+        results = matchingOccupation(traits[4], results, isOccupation);
+        traits = prompt('Enter an eye color.');
+        results = matchingEyeColor(traits[5], results, isEyeColor);
         break;
     case "3":
         alert("You have exited the most-wanted search.");
@@ -312,12 +325,24 @@ const getUserSelection = (object, objects, getDescendants, getFamily, getNextOfK
 };
 const responder = (object) => console.log(object); //alert(object);
 const exit = () => window.exit();
-// const isGender = (element, object) => object.gender === element;
-// const isHeight = (element, object) => object.height === element;
-// const isWeight = (element, object) => object.weight === element;
-// const isEyeColor = (element, object) => object.eyeColor === element;
-// const isOccupation = (element, object) => object.occupation === element;
-// const isParentId = (element, object) => object === element;
+const isAge = 0;
+const matchingAge = 0;
+const isGender = (element, object) => object.gender === element;
+const matchingGender = (element, objects, isGender) =>
+    objects.filter(object => isGender(element, object));
+const isHeight = (element, object) => object.height === element;
+const matchingHeight = (element, objects, isHeight) =>
+    objects.filter(object => isHeight(element, object));
+const isWeight = (element, object) => object.weight === element;
+const matchingWeight = (element, objects, isWeight) =>
+    objects.filter(object => isWeight(element, object));
+const isEyeColor = (element, object) => object.eyeColor === element;
+const matchingEyeColor = (element, objects, isEyeColor) =>
+    objects.filter(object => isEyeColor(element, object));
+const isOccupation = (element, object) => object.occupation === element;
+const matchingOccupation = (element, objects, isOccupation) =>
+    objects.filer(object => isOccupation(element, object));
+const isParentId = (element, object) => object === element;
 const isLastName = (element, object) => element === object.lastName;
 const matchingLastName = (element, objects, isLastName) =>
     objects.filter(o => isLastName(element, o));
@@ -380,7 +405,7 @@ const getNextOfKin =
         nextOfKin.grandChildren = sortByAge(getRelatives(nextOfKin.children, objects, isChildren));
         nextOfKin.grandParents = [];
         sortByAge(nextOfKin.parents.forEach(object => nextOfKin.grandParents.push(...getParents(object, objects))));
-        nextOfKin.siblingsChildren = sortByAge(Relatives(nextOfKin.siblings, objects, isChildren));
+        nextOfKin.siblingsChildren = sortByAge(getRelatives(nextOfKin.siblings, objects, isChildren));
         nextOfKin.parentsSiblings = sortByAge(matchingParents(nextOfKin.grandParents.map(o => o.id), excludeMatchingObjects(nextOfKin.parents, objects, isNotObject), isParent));
         nextOfKin.greatGrandChildren = sortByAge(getRelatives(nextOfKin.grandChildren, objects, isChildren));
         nextOfKin.greatGrandParents = [];
@@ -395,10 +420,9 @@ const getRelatives =
             relatives.push(...objects.filter(o => association(object, o))));
         return relatives;
     };
-
-const sortByAge = personArray => personArray.sort((a, b) =>
-    Date.parse(a.dob) - Date.parse(b.dob)
-);
-
-
+const sortByAge = personArray => {
+    if (personArray === undefined)
+        return [];
+    return personArray.sort((a, b) => Date.parse(a.dob) - Date.parse(b.dob));
+};
 start(dataObject, getUserSelection, matchingFirstName, matchingLastName, exit);
