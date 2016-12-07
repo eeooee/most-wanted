@@ -415,7 +415,17 @@ const getNextOfKin =
 
 const ageMatch = (element, startAge, endAge) => {
     let millisecondsInYear = 31556952000;
-    return Date.parse(element.dob) >= startAge * millisecondsInYear || Date.parse(element.dob) <= endAge * millisecondsInYear;
+    let controlledAge = getAge(element.dob);
+    return controlledAge >= startAge * millisecondsInYear && controlledAge <= endAge * millisecondsInYear;
+};
+
+const getAge = (ageString) => {
+    let controlledAge = Date.parse(ageString);
+    if (controlledAge <= 0) {
+        let negativeFix = Date.now();
+        controlledAge = Math.abs(controlledAge) + negativeFix;
+    }
+    return controlledAge;
 };
 
 const getRelatives =
