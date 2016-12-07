@@ -268,38 +268,38 @@ const start = (objects, getUserSelection, matchingFirstName, matchingLastName, e
     let inputNumber = "1";
     //let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     switch (inputNumber) {
-    case "1":
-        //let name = "Mattias Madden".split(' ');
-        let name = 'Joy Madden'.split(' ');
-        //let name = "Eloise Madden".split(' ');
-        //let name = 'Joey Madden'.split(' ');
-        //let name = prompt("Enter a first and last name to search.").split(" ");
-        let person = matchingFirstName(name[0], matchingLastName(name[1], objects, isLastName), isFirstName);
-        getUserSelection(person[0], objects, getDescendants, getFamily, getNextOfKin);
-        break;
-    case "2":
-        let traits = [];
-        //let traits = alert("Please type your search terms, separated by commas:\n")
-        traits = prompt('Enter a gender?');
-        let results = matchingGender(traits[0], objects, isGender);
-        traits = prompt('Enter an age or age range (#-#).');
-        results = matchingAge(traits[1], results, isAge);
-        traits = prompt('Enter a hegiht.');
-        results = matchingHeight(traits[2], results, isHeight);
-        traits = prompt('Enter a weight.');
-        results = matchingWeight(traits[3], results, isWeight);
-        traits = prompt('Enter an occupation.');
-        results = matchingOccupation(traits[4], results, isOccupation);
-        traits = prompt('Enter an eye color.');
-        results = matchingEyeColor(traits[5], results, isEyeColor);
-        break;
-    case "3":
-        alert("You have exited the most-wanted search.");
-        exit();
-        break;
-    default:
-        alert("Invalid Selection!");
-        break;
+        case "1":
+            //let name = "Mattias Madden".split(' ');
+            let name = 'Joy Madden'.split(' ');
+            //let name = "Eloise Madden".split(' ');
+            //let name = 'Joey Madden'.split(' ');
+            //let name = prompt("Enter a first and last name to search.").split(" ");
+            let person = matchingFirstName(name[0], matchingLastName(name[1], objects, isLastName), isFirstName);
+            getUserSelection(person[0], objects, getDescendants, getFamily, getNextOfKin);
+            break;
+        case "2":
+            let traits = [];
+            //let traits = alert("Please type your search terms, separated by commas:\n")
+            traits = prompt('Enter a gender?');
+            let results = matchingGender(traits[0], objects, isGender);
+            traits = prompt('Enter an age or age range (#-#).');
+            results = matchingAge(traits[1], results, isAge);
+            traits = prompt('Enter a hegiht.');
+            results = matchingHeight(traits[2], results, isHeight);
+            traits = prompt('Enter a weight.');
+            results = matchingWeight(traits[3], results, isWeight);
+            traits = prompt('Enter an occupation.');
+            results = matchingOccupation(traits[4], results, isOccupation);
+            traits = prompt('Enter an eye color.');
+            results = matchingEyeColor(traits[5], results, isEyeColor);
+            break;
+        case "3":
+            alert("You have exited the most-wanted search.");
+            exit();
+            break;
+        default:
+            alert("Invalid Selection!");
+            break;
     }
     //start();
 };
@@ -307,20 +307,20 @@ const getUserSelection = (object, objects, getDescendants, getFamily, getNextOfK
     let inputNumber = '3';
     //let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin");
     switch (inputNumber) {
-    case '1':
-        console.log(getDescendants(object, objects, isChildren, matchingChildren));
-        //responder(getDescendants(object));
-        break;
-    case '2':
-        console.log(getFamily(object, objects, getParents, isParent, matchingParents, isSpouse, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects));
-        //responder(family(person));
-        break;
-    case '3':
-        console.log(getNextOfKin(object, objects, getParents, isParent, matchingParents, isSpouse, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily));
-        break;
-    default:
-        alert("Invalid Selection!");
-        break;
+        case '1':
+            console.log(getDescendants(object, objects, isChildren, matchingChildren));
+            //responder(getDescendants(object));
+            break;
+        case '2':
+            console.log(getFamily(object, objects, getParents, isParent, matchingParents, isSpouse, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects));
+            //responder(family(person));
+            break;
+        case '3':
+            console.log(getNextOfKin(object, objects, getParents, isParent, matchingParents, isSpouse, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily));
+            break;
+        default:
+            alert("Invalid Selection!");
+            break;
     }
 };
 const responder = (object) => console.log(object); //alert(object);
@@ -412,6 +412,12 @@ const getNextOfKin =
         sortByAge(nextOfKin.grandParents.forEach(object => nextOfKin.greatGrandParents.push(...getParents(object, objects))));
         return nextOfKin;
     };
+
+const ageMatch = (element, startAge, endAge) => {
+    let millisecondsInYear = 31556952000;
+    return Date.parse(element.dob) >= startAge * millisecondsInYear || Date.parse(element.dob) <= endAge * millisecondsInYear;
+};
+
 const getRelatives =
     (object, objects, association, relatives = []) => {
         if (object.length <= 0)
