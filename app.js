@@ -398,6 +398,7 @@ const excludeMatchingObjects = (element, objects, isNotObject) =>
     objects.filter(object => isNotObject(element, object));
 const getDescendants =
     (object, objects, isChildren, matchingChildren, allDescendants = []) => {
+        if (object === undefined) return [];
         let children = matchingChildren(object, objects, isChildren);
         if (children.length <= 0)
             return [];
@@ -407,6 +408,7 @@ const getDescendants =
     };
 const getFamily =
     (object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects, allFamilyMembers = []) => {
+        if (object === undefined) return [];
         allFamilyMembers.spouse = matchingSpouse(object, objects, isMatch);
         allFamilyMembers.children = matchingChildren(object, objects, isChildren);
         allFamilyMembers.parents = getParents(object, objects);
@@ -415,6 +417,7 @@ const getFamily =
     };
 const getNextOfKin =
     (object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, nextOfKin = []) => {
+        if (object === undefined) return [];
         let family = getFamily(object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects);
         nextOfKin.spouse = family.spouse;
         nextOfKin.children = sortByAge(family.children);
@@ -451,6 +454,7 @@ const convertHeightToInches = (height) => {
 };
 const getDetails = (people, label, keys) => {
     let string = label + ":\n";
+    if (people === undefined) return string;
     people.forEach(person => {
         string += '   ' + person.firstName + " " + person.lastName + "\n";
         keys.forEach(o => string += o + ": " + person[o] + "\n");
