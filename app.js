@@ -463,3 +463,25 @@ const getDetails = (people, label, keys) => {
 };
 start(dataObject, getUserSelection, matchingFirstName, matchingLastName, exit); >>>
 >>> > ba838c6cc52d601e394c87545422cf33d2bebf99
+    -
+    Date.parse(b.dob));
+};
+const convertHeightToInches = (height) => {
+    let inchesInFoot = 12;
+    let heightArray = height.replace(/[^\d]/g, ' ')
+        .split(' ', 2);
+    return (+(heightArray[0] * inchesInFoot) + +heightArray[1]);
+
+};
+const getDetails = (people, label, keys) => {
+    let string = label + ":\n";
+    if (people === undefined) return string;
+    people.forEach(person => {
+        string += '   ' + person.firstName + " " + person.lastName + "\n";
+        keys.forEach(o => string += o + ": " + person[o] + "\n");
+    });
+    return string;
+};
+start(dataObject, getUserSelection, matchingFirstName, matchingLastName, exit); >>>
+>>>
+> ba838c6cc52d601e394c87545422cf33d2bebf99
