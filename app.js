@@ -350,6 +350,10 @@ const matchingAge = 0;
 const isGender = (element, object) => object.gender === element;
 const matchingGender = (element, objects, isGender) =>
     objects.filter(object => isGender(element, object));
+const ageMatch = (element, startAge, endAge) => {
+    let millisecondsInYear = 31556952000;
+    return Date.parse(element.dob) >= startAge * millisecondsInYear || Date.parse(element.dob) <= endAge * millisecondsInYear;
+};
 const isHeight = (element, object) => object.height === element;
 const matchingHeight = (element, objects, isHeight) =>
     objects.filter(object => isHeight(element, object));
