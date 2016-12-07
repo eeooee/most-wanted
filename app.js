@@ -279,19 +279,33 @@ const start = (objects, getUserSelection, matchingFirstName, matchingLastName) =
         let results = objects;
         alert("Please type what you know about the person.\n");
         traits.gender = prompt('Enter a gender.');
-        results = matchingGender(traits.gender, results, isMatch);
+        if (traits.gender !== "") {
+            results = matchingGender(traits.gender, results, isMatch);
+        }
+        console.log(results);
         traits.age = prompt('Enter an age or age range (#-#)')
             .split('-');
-        results = results.filter(o => matchingAge(o, traits.age, getAge));
+        if (traits.age !== "") {
+            results = results.filter(o => matchingAge(o, traits.age, getAge));
+        }
+        console.log(results);
         let height = prompt('Enter a height #\'#"');
         traits.height = convertHeightToInches(height);
-        results = matchingHeight(traits.height, results, isMatch);
+        if (traits.height !== "") {
+            results = matchingHeight(traits.height, results, isMatch);
+        }
         traits.weight = prompt('Enter a weight in pounds.');
-        results = matchingWeight(traits.weight, results, isMatch);
+        if (traits.weight !== "") {
+            results = matchingWeight(traits.weight, results, isMatch);
+        }
         traits.eyeColor = prompt('Enter an eye color.');
-        results = matchingEyeColor(traits.eyeColor, results, isMatch);
+        if (traits.eyeColor !== "") {
+            results = matchingEyeColor(traits.eyeColor, results, isMatch);
+        }
         traits.occupation = prompt('Enter an occupation.');
-        results = matchingOccupation(traits.occupation, results, isMatch);
+        if (traits.occupation !== "") {
+            results = matchingOccupation(traits.occupation, results, isMatch);
+        }
         responder(getDetails(results, 'Results', []));
         start(objects, getUserSelection, matchingFirstName, matchingLastName);
         break;
