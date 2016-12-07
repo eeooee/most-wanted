@@ -334,18 +334,18 @@ const responder = (object) => alert(object);
 const isMatch = (element, object) => object == element;
 const matchingGender = (element, objects, is) =>
     objects.filter(object => isMatch(element, object.gender));
-const matchingAge = (element, startAge, endAge, getAge) => {
-    let millisecondsInYear = 31556952000;
+const matchingAge = (element, ageRange, getAge) => {
     let controlledAge = getAge(element.dob);
-    return controlledAge >= startAge * millisecondsInYear && controlledAge <= endAge * millisecondsInYear;
+    if (ageRange.length === 1) {
+        return (controlledAge) == ageRange[0];
+    }
+    return controlledAge >= ageRange[0] && controlledAge <= ageRange[1];
 };
 const getAge = (ageString) => {
     let controlledAge = Date.parse(ageString);
-    if (controlledAge <= 0) {
-        let negativeFix = Date.now();
-        controlledAge = Math.abs(controlledAge) + negativeFix;
-    }
-    return controlledAge;
+    let msInYear = 31556952000;
+    let negativeFix = Date.now();
+    return parseInt(((negativeFix - controlledAge) / msInYear));
 };
 const matchingHeight = (element, objects, isMatch) =>
     objects.filter(object => isMatch(element, object.height));
