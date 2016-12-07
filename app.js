@@ -265,8 +265,7 @@ var dataObject = [{
     "parents": [313207561, 313997561],
     "currentSpouse": null
 }];
-
-const start = (objects, getUserSelection, matchingFirstName, matchingLastName, exit) => {
+const start = (objects, getUserSelection, matchingFirstName, matchingLastName) => {
     let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     switch (inputNumber) {
     case "1":
@@ -293,14 +292,14 @@ const start = (objects, getUserSelection, matchingFirstName, matchingLastName, e
         traits.occupation = prompt('Enter an occupation.');
         results = matchingOccupation(traits.occupation, results, isMatch);
         responder(getDetails(results, 'Results: ', []));
+        start(objects, getUserSelection, matchingFirstName, matchingLastName);
         break;
     case "3":
         alert("You have exited the most-wanted search.");
-        exit();
         break;
     default:
         alert("Invalid Selection!");
-        start();
+        start(objects, getUserSelection, matchingFirstName, matchingLastName);
         break;
     }
 };
@@ -329,9 +328,9 @@ const getUserSelection = (object, objects, getDescendants, getFamily, getNextOfK
         alert("Invalid Selection!");
         break;
     }
+    start();
 };
 const responder = (object) => alert(object);
-const exit = () => window.exit;
 const isMatch = (element, object) => object == element;
 const matchingGender = (element, objects, is) =>
     objects.filter(object => isMatch(element, object.gender));
@@ -467,4 +466,4 @@ const getFirstNextOfKin = (object, objects, getParents, isMatch, isParent, match
     if (nextOfKin.greatGrandchildrendetails <= 0 && nextOfKin.greatGrandparents) return getDetails(sortByAge(nextOfKin.greatGrandparents), 'Great Grandparent', []);
     return 'No living next of kin.';
 };
-start(dataObject, getUserSelection, matchingFirstName, matchingLastName, exit);
+start(dataObject, getUserSelection, matchingFirstName, matchingLastName);
