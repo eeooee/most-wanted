@@ -279,20 +279,20 @@ const start = (objects, getUserSelection, matchingFirstName, matchingLastName) =
         let results = objects;
         alert("Please type what you know about the person.\n");
         traits.gender = prompt('Enter a gender.');
-        if (traits.gender.length > 0) results = matchingGender(traits.gender, results, isMatch);
+        results = matchingGender(traits.gender, results, isMatch);
         traits.age = prompt('Enter an age or age range (#-#)')
             .split('-');
-        if (traits.age.length > 0) results = results.filter(o => matchingAge(o, traits.age, getAge));
+        results = results.filter(o => matchingAge(o, traits.age, getAge));
         let height = prompt('Enter a height #\'#"');
         traits.height = convertHeightToInches(height);
-        if (traits.height.length > 0) results = matchingHeight(traits.height, results, isMatch);
+        results = matchingHeight(traits.height, results, isMatch);
         traits.weight = prompt('Enter a weight in pounds.');
-        if (traits.weight.length > 0) results = matchingWeight(traits.weight, results, isMatch);
+        results = matchingWeight(traits.weight, results, isMatch);
         traits.eyeColor = prompt('Enter an eye color.');
-        if (traits.eyeColor.length > 0) results = matchingEyeColor(traits.eyeColor, results, isMatch);
+        results = matchingEyeColor(traits.eyeColor, results, isMatch);
         traits.occupation = prompt('Enter an occupation.');
-        if (traits.occupation.length > 0) results = matchingOccupation(traits.occupation, results, isMatch);
-        responder(getDetails(results, 'Results: ', []));
+        results = matchingOccupation(traits.occupation, results, isMatch);
+        responder(getDetails(results, 'Results', []));
         start(objects, getUserSelection, matchingFirstName, matchingLastName);
         break;
     case "3":
@@ -329,11 +329,11 @@ const getUserSelection = (object, objects, getDescendants, getFamily, getNextOfK
         alert("Invalid Selection!");
         break;
     }
-    start();
+    start(objects, getUserSelection, matchingFirstName, matchingLastName);
 };
 const responder = (object) => alert(object);
 const isMatch = (element, object) => object == element;
-const matchingGender = (element, objects, is) =>
+const matchingGender = (element, objects, isMatch) =>
     objects.filter(object => isMatch(element, object.gender));
 const matchingAge = (element, ageRange, getAge) => {
     let controlledAge = getAge(element.dob);
@@ -455,7 +455,7 @@ const getDetails = (people, label, keys) => {
 };
 const getFirstNextOfKin = (object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, getDetails, sortByAge) => {
     let nextOfKin = getNextOfKinList(object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily);
-    if (nextOfKin.spouse.length > 0) responder(getDetails(nextOfKin.spouse, 'Spouse', []));
+    if (nextOfKin.spouse.length > 0) return getDetails(nextOfKin.spouse, 'Spouse', []);
     if (nextOfKin.spouse.length <= 0 && nextOfKin.children.length > 0) return getDetails(sortByAge(nextOfKin.children), 'Child', []);
     if (nextOfKin.children.length <= 0 && nextOfKin.parents.length > 0) return getDetails(sortByAge(nextOfKin.parents), 'Parent', []);
     if (nextOfKin.parents.length <= 0 && nextOfKin.siblings.length > 0) return getDetails(sortByAge(nextOfKin.siblings), 'Sibling', []);
