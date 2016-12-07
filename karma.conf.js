@@ -1,6 +1,6 @@
 // Karma configuration
 // Generated on Wed Dec 07 2016 15:52:50 GMT-0600 (Central Standard Time)
-
+/*jshint -W033*/
 module.exports = function(config) {
     config.set({
 
@@ -15,7 +15,6 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'app.js',
             'app-specs.js',
             'nick-specs.js'
         ],
