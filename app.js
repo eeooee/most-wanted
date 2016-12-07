@@ -1,4 +1,5 @@
 /*jshint esversion: 6 */
+/*jshint -W007*/
 var dataObject = [{
     "id": 272822514,
     "firstName": "Billy",
@@ -265,35 +266,33 @@ var dataObject = [{
     "currentSpouse": null
 }];
 const start = (objects, getUserSelection, matchingFirstName, matchingLastName, exit) => {
-    let inputNumber = "1";
-    //let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
+    let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     switch (inputNumber) {
         case "1":
-            let name = "Mattias Madden".split(' ');
-            //let name = 'Joy Madden'.split(' ');
-            //let name = "Eloise Madden".split(' ');
-            //let name = 'Joey Madden'.split(' ');
-            //let name = prompt("Enter a first and last name to search.").split(" ");
+            let name = prompt("Enter a first and last name to search.")
+                .split(" ");
             let person = matchingFirstName(name[0], matchingLastName(name[1], objects, isMatch), isMatch);
             getUserSelection(person[0], objects, getDescendants, getFamily, getNextOfKin);
             break;
         case "2":
             let traits = [];
-            //traits = alert("Please type what you know about the person.\n")
-            traits = prompt('Enter a gender.');
-            let results = matchingGender(traits[0], objects, isGender);
-            traits = prompt('Enter an age or age range (#-#).');
-            results = ageMatch(traits[1], results, isAge);
+            alert("Please type what you know about the person.\n");
+            traits.gender = prompt('Enter a gender.');
+            let results = matchingGender(traits.gender, objects, isMatch);
+            //traits.age = prompt('Enter an age or age range (#-#).split('-')');
+            traits.age = 29;
+            //results = results.filter(o => matchingAge(o, 20, 30, getAge));
             let height = prompt('Enter a height #\'#"');
-            traits = convertHeightToInches(height);
-            results = matchingHeight(traits[2], results, isHeight);
-            traits = prompt('Enter a weight.');
-            results = matchingWeight(traits[3], results, isWeight);
-            traits = prompt('Enter an occupation.');
-            results = matchingOccupation(traits[4], results, isOccupation);
-            traits = prompt('Enter an eye color.');
-            results = matchingEyeColor(traits[5], results, isEyeColor);
-            //responder(getDetails(results, 'Results: ', []);
+            traits.height = convertHeightToInches(height);
+            console.log(traits.height);
+            results = matchingHeight(traits.height, results, isMatch);
+            traits.weight = prompt('Enter a weight in pounds.');
+            results = matchingWeight(traits.weight, results, isMatch);
+            traits.eyeColor = prompt('Enter an eye color.');
+            results = matchingEyeColor(traits.eyeColor, results, isMatch);
+            traits.occupation = prompt('Enter an occupation.');
+            results = matchingOccupation(traits.occupation, results, isMatch);
+            responder(getDetails(results, 'Results: ', []));
             break;
         case "3":
             alert("You have exited the most-wanted search.");
@@ -303,18 +302,15 @@ const start = (objects, getUserSelection, matchingFirstName, matchingLastName, e
             alert("Invalid Selection!");
             break;
     }
-    //start();
 };
 const getUserSelection = (object, objects, getDescendants, getFamily, getNextOfKin) => {
-    let inputNumber = '3';
     let details;
-    //let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin");
+    let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin");
     switch (inputNumber) {
         case '1':
             let descendants = getDescendants(object, objects, isChildren, matchingChildren);
             details = getDetails(descendants, 'Descendants', []);
-            console.log(details);
-            //responder(getDetails(getDescendants(object)));
+            responder(details);
             break;
         case '2':
             let family = getFamily(object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects);
@@ -322,8 +318,7 @@ const getUserSelection = (object, objects, getDescendants, getFamily, getNextOfK
             details += getDetails(family.children, 'Children', []);
             details += getDetails(family.parents, 'Parents', []);
             details += getDetails(family.siblings, 'Siblings', []);
-            console.log(details);
-            //responder(getDetails(details));
+            responder(details);
             break;
         case '3':
             let nextOfKin = getNextOfKin(object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily);
@@ -337,25 +332,23 @@ const getUserSelection = (object, objects, getDescendants, getFamily, getNextOfK
             details += getDetails(nextOfKin.parentsSiblings, 'Aunts/Uncles', []);
             details += getDetails(nextOfKin.greatGrandchildren, 'Great Grandchildren', []);
             details += getDetails(nextOfKin.greatGrandparents, 'Great Grandparents', []);
-            console.log(details);
+            responder(details);
             break;
         default:
             alert("Invalid Selection!");
             break;
     }
 };
-const responder = (object) => console.log(object); //alert(object);
-const exit = () => window.exit();
+const responder = (object) => alert(object);
+const exit = () => window.exit;
 const isMatch = (element, object) => object == element;
 const matchingGender = (element, objects, is) =>
-    objects.filter(object => isMatch(element, o.gender));
-
-const ageMatch = (element, startAge, endAge) => {
+    objects.filter(object => isMatch(element, object.gender));
+const matchingAge = (element, startAge, endAge, getAge) => {
     let millisecondsInYear = 31556952000;
     let controlledAge = getAge(element.dob);
     return controlledAge >= startAge * millisecondsInYear && controlledAge <= endAge * millisecondsInYear;
 };
-
 const getAge = (ageString) => {
     let controlledAge = Date.parse(ageString);
     if (controlledAge <= 0) {
@@ -371,7 +364,7 @@ const matchingWeight = (element, objects, isMatch) =>
 const matchingEyeColor = (element, objects, isMatch) =>
     objects.filter(object => isMatch(element, object.eyeColor));
 const matchingOccupation = (element, objects, isMatch) =>
-    objects.filer(object => isMatch(element, object.occupation));
+    objects.filter(object => isMatch(element, object.occupation));
 const matchingLastName = (element, objects, isMatch) =>
     objects.filter(o => isMatch(element, o.lastName));
 const matchingFirstName = (element, objects, isMatch) =>
@@ -405,6 +398,7 @@ const excludeMatchingObjects = (element, objects, isNotObject) =>
     objects.filter(object => isNotObject(element, object));
 const getDescendants =
     (object, objects, isChildren, matchingChildren, allDescendants = []) => {
+        if (object === undefined) return [];
         let children = matchingChildren(object, objects, isChildren);
         if (children.length <= 0)
             return [];
@@ -414,6 +408,7 @@ const getDescendants =
     };
 const getFamily =
     (object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects, allFamilyMembers = []) => {
+        if (object === undefined) return [];
         allFamilyMembers.spouse = matchingSpouse(object, objects, isMatch);
         allFamilyMembers.children = matchingChildren(object, objects, isChildren);
         allFamilyMembers.parents = getParents(object, objects);
@@ -422,6 +417,7 @@ const getFamily =
     };
 const getNextOfKin =
     (object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, nextOfKin = []) => {
+        if (object === undefined) return [];
         let family = getFamily(object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects);
         nextOfKin.spouse = family.spouse;
         nextOfKin.children = sortByAge(family.children);
@@ -445,20 +441,25 @@ const getRelatives =
             relatives.push(...objects.filter(o => association(object, o))));
         return relatives;
     };
-
+const sortByAge = personArray => {
+    if (personArray !== undefined)
+        return personArray.sort((a, b) => Date.parse(a.dob) - Date.parse(b.dob));
+};
 const convertHeightToInches = (height) => {
     let inchesInFoot = 12;
-    let heightArray = height.replace(/[^\d]/g, ' ').split(' ', 2);
+    let heightArray = height.replace(/[^\d]/g, ' ')
+        .split(' ', 2);
     return (+(heightArray[0] * inchesInFoot) + +heightArray[1]);
 
 };
-
 const getDetails = (people, label, keys) => {
     let string = label + ":\n";
+    if (people === undefined) return string;
     people.forEach(person => {
         string += '   ' + person.firstName + " " + person.lastName + "\n";
         keys.forEach(o => string += o + ": " + person[o] + "\n");
     });
     return string;
 };
-start(dataObject, getUserSelection, matchingFirstName, matchingLastName, exit);
+start(dataObject, getUserSelection, matchingFirstName, matchingLastName, exit); >>>
+>>> > ba838c6cc52d601e394c87545422cf33d2bebf99
