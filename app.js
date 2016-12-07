@@ -280,7 +280,6 @@ const start = (objects, getUserSelection, matchingFirstName, matchingLastName, e
             // traits.gender = prompt('Enter a gender.');
             // let results = matchingGender(traits.gender, objects, isMatch);
             // traits.age = prompt('Enter an age or age range (#-#)');
-            traits.age = "67";
             traits.age = traits.age.split("-");
             results = objects.filter(o => matchingAge(o, traits.age, getAge));
             let height = prompt('Enter a height #\'#"');
