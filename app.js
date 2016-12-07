@@ -265,6 +265,7 @@ var dataObject = [{
     "parents": [313207561, 313997561],
     "currentSpouse": null
 }];
+
 const start = (objects, getUserSelection, matchingFirstName, matchingLastName, exit) => {
     let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     switch (inputNumber) {
