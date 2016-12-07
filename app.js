@@ -278,33 +278,30 @@ const start = (objects, getUserSelection, matchingFirstName, matchingLastName) =
         let traits = [];
         let results = objects;
         alert("Please type what you know about the person.\n");
-        traits.gender = prompt('Enter a gender.');
-        if (traits.gender !== "") {
-            results = matchingGender(traits.gender, results, isMatch);
+        let input = prompt('Enter a gender.');
+        if (input !== "") {
+            results = matchingGender(input.toLowerCase(), results, isMatch);
         }
-        console.log(results);
-        traits.age = prompt('Enter an age or age range (#-#)');
-        console.log(results);
-        if (traits.age !== "") {
-            results = results.filter(o => matchingAge(o, traits.age.split('-'), getAge));
+        input = prompt('Enter an age or age range (#-#)');
+        if (!isNaN(input) && input !== "") {
+            results = results.filter(o => matchingAge(o, input.split('-'), getAge));
         }
-        console.log(results);
         let height = prompt('Enter a height #\'#"');
         if (height !== "") {
-            traits.height = convertHeightToInches(height);
-            results = matchingHeight(traits.height, results, isMatch);
+            input = convertHeightToInches(height);
+            results = matchingHeight(input, results, isMatch);
         }
-        traits.weight = prompt('Enter a weight in pounds.');
-        if (traits.weight !== "") {
-            results = matchingWeight(traits.weight, results, isMatch);
+        input = prompt('Enter a weight in pounds.');
+        if (input !== "") {
+            result = checkInput(input, isNaN, results, isMatch, matchingAge, 'Please enter a valid weight in pounds');
         }
-        traits.eyeColor = prompt('Enter an eye color.');
-        if (traits.eyeColor !== "") {
-            results = matchingEyeColor(traits.eyeColor, results, isMatch);
+        input = prompt('Enter an eye color.');
+        if (input !== "") {
+            results = matchingEyeColor(input.toLowerCase(), results, isMatch);
         }
-        traits.occupation = prompt('Enter an occupation.');
-        if (traits.occupation !== "") {
-            results = matchingOccupation(traits.occupation, results, isMatch);
+        input = prompt('Enter an occupation.');
+        if (input !== "") {
+            results = matchingOccupation(input.toLowerCase(), results, isMatch);
         }
         responder(getDetails(results, 'Results', []));
         start(objects, getUserSelection, matchingFirstName, matchingLastName);
@@ -317,6 +314,12 @@ const start = (objects, getUserSelection, matchingFirstName, matchingLastName) =
         start(objects, getUserSelection, matchingFirstName, matchingLastName);
         break;
     }
+};
+const checkInput = (input, condition, previousResults, isMatch, matchingFunction, reprompt) => {
+    if (condition(input)) {
+        checkInput(prompt(reprompt), condition, previousResults, isMatch, matchingFunction, reprompt);
+    }
+    return matchingFunction(input, previousResults, isMatch);
 };
 const getUserSelection = (object, objects, getDescendants, getFamily, getNextOfKinList) => {
     let details;
