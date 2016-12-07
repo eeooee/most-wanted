@@ -283,15 +283,15 @@ const start = (objects, getUserSelection, matchingFirstName, matchingLastName) =
             results = matchingGender(traits.gender, results, isMatch);
         }
         console.log(results);
-        traits.age = prompt('Enter an age or age range (#-#)')
-            .split('-');
+        traits.age = prompt('Enter an age or age range (#-#)');
+        console.log(results);
         if (traits.age !== "") {
-            results = results.filter(o => matchingAge(o, traits.age, getAge));
+            results = results.filter(o => matchingAge(o, traits.age.split('-'), getAge));
         }
         console.log(results);
         let height = prompt('Enter a height #\'#"');
-        traits.height = convertHeightToInches(height);
-        if (traits.height !== "") {
+        if (height !== "") {
+            traits.height = convertHeightToInches(height);
             results = matchingHeight(traits.height, results, isMatch);
         }
         traits.weight = prompt('Enter a weight in pounds.');
