@@ -265,7 +265,7 @@ var dataObject = [{
     "currentSpouse": null
 }];
 const start = (objects, getUserSelection, matchingFirstName, matchingLastName, exit) => {
-    let inputNumber = "1";
+    let inputNumber = "2";
     //let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     switch (inputNumber) {
     case "1":
@@ -280,19 +280,26 @@ const start = (objects, getUserSelection, matchingFirstName, matchingLastName, e
     case "2":
         let traits = [];
         //traits = alert("Please type what you know about the person.\n")
-        traits = prompt('Enter a gender.');
-        let results = matchingGender(traits[0], objects, isGender);
-        traits = prompt('Enter an age or age range (#-#).');
-        results = matchingAge(traits[1], results, isAge);
-        traits = prompt('Enter a hegiht.');
-        results = matchingHeight(traits[2], results, isHeight);
-        traits = prompt('Enter a weight.');
-        results = matchingWeight(traits[3], results, isWeight);
-        traits = prompt('Enter an occupation.');
-        results = matchingOccupation(traits[4], results, isOccupation);
-        traits = prompt('Enter an eye color.');
-        results = matchingEyeColor(traits[5], results, isEyeColor);
-        //responder(getDetails(results, 'Results: ', []);
+        //traits = prompt('Enter a gender.');
+        traits.gender = 'female';
+        let results = matchingGender(traits.gender, objects, isMatch);
+        //traits = prompt('Enter an age or age range (#-#).split('-')');
+        traits.age = '';
+        //results = matchingAge(traits.age, results, isMatch);
+        //traits = prompt('Enter a hegiht #’#” format.');
+        traits.height = 67;
+        results = matchingHeight(traits.height, results, isMatch);
+        // traits = prompt('Enter a weight in pounds.');
+        traits.weight = 100;
+        results = matchingWeight(traits.weight, results, isMatch);
+        // traits = prompt('Enter an occupation.');
+        traits.eyeColor = 'blue';
+        results = matchingEyeColor(traits.eyeColor, results, isMatch);
+        traits.occupation = 'doctor';
+        results = matchingOccupation(traits.occupation, results, isMatch);
+        console.log(results);
+        // traits = prompt('Enter an eye color.');
+        responder(getDetails(results, 'Results: ', []));
         break;
     case "3":
         alert("You have exited the most-wanted search.");
@@ -347,8 +354,8 @@ const responder = (object) => console.log(object); //alert(object);
 const exit = () => window.exit();
 const isMatch = (element, object) => object == element;
 const matchingGender = (element, objects, is) =>
-    objects.filter(object => isMatch(element, o.gender));
-const ageMatch = (element, startAge, endAge) => {
+    objects.filter(object => isMatch(element, object.gender));
+const matchingAge = (element, startAge, endAge) => {
     let millisecondsInYear = 31556952000;
     return Date.parse(element.dob) >= startAge * millisecondsInYear || Date.parse(element.dob) <= endAge * millisecondsInYear;
 };
@@ -359,7 +366,7 @@ const matchingWeight = (element, objects, isMatch) =>
 const matchingEyeColor = (element, objects, isMatch) =>
     objects.filter(object => isMatch(element, object.eyeColor));
 const matchingOccupation = (element, objects, isMatch) =>
-    objects.filer(object => isMatch(element, object.occupation));
+    objects.filter(object => isMatch(element, object.occupation));
 const matchingLastName = (element, objects, isMatch) =>
     objects.filter(o => isMatch(element, o.lastName));
 const matchingFirstName = (element, objects, isMatch) =>
