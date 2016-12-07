@@ -284,7 +284,8 @@ const start = (objects, getUserSelection, matchingFirstName, matchingLastName, e
             let results = matchingGender(traits[0], objects, isGender);
             traits = prompt('Enter an age or age range (#-#).');
             results = matchingAge(traits[1], results, isAge);
-            traits = prompt('Enter a hegiht.');
+            let height = prompt('Enter a height #\'#"');
+            traits = convertHeightToInches(height);
             results = matchingHeight(traits[2], results, isHeight);
             traits = prompt('Enter a weight.');
             results = matchingWeight(traits[3], results, isWeight);
@@ -445,6 +446,12 @@ const getRelatives =
         return relatives;
     };
 
+const convertHeightToInches = (height) => {
+    let inchesInFoot = 12;
+    let heightArray = height.split('\'', 2);
+    return (heightArray[0] * inchesInFoot) + heightArray[1];
+
+}
 const getDetails = (people, label, keys) => {
     let string = label + ":\n";
     people.forEach(person => {
