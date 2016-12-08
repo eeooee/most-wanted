@@ -494,7 +494,6 @@ const getDetails = (people, label, keys) => {
     });
     return string;
 };
-
 const getFirstNextOfKin = (object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, getDetails, sortByAge) => {
     let nextOfKin = getNextOfKinList(object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily);
     if (nextOfKin.spouse.length > 0) 
