@@ -268,50 +268,50 @@ const start = () => {
     let inputNumber = prompt("SELECT A NUMBER\n1. Search by first and last name.\n2. Search by characteristics of the person.\n3. Exit");
     let objects = dataObject;
     switch (inputNumber) {
-    case "1":
-        let name = prompt("Enter a first and last name to search.")
-            .split(" ");
-        let person = matchingFirstName(name[0], matchingLastName(name[1], objects, isMatch), isMatch);
-        getUserSelection(person[0], objects, responder, getDescendants, getFirstNextOfKin, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, getDetails, sortByAge);
-        break;
-    case "2":
-        let results = objects;
-        alert("Please type what you know about the person.\n");
-        let input = prompt('Enter a gender.');
-        if (input !== "") {
-            results = matchingGender(input.toLowerCase(), results, isMatch);
-        }
-        input = prompt('Enter an age or age range (#-#)');
-        if (!isNaN(input) && input !== "") {
-            results = results.filter(o => matchingAge(o, input.split('-'), getAge));
-        }
-        let height = prompt('Enter a height #\'#"');
-        if (height !== "") {
-            input = convertHeightToInches(height);
-            results = matchingHeight(input, results, isMatch);
-        }
-        input = prompt('Enter a weight in pounds.');
-        if (input !== "") {
-            results = checkInput(input, isNaN, results, isMatch, matchingWeight, 'Please enter a valid weight in pounds');
-        }
-        input = prompt('Enter an eye color.');
-        if (input !== "") {
-            results = matchingEyeColor(input.toLowerCase(), results, isMatch);
-        }
-        input = prompt('Enter an occupation.');
-        if (input !== "") {
-            results = matchingOccupation(input.toLowerCase(), results, isMatch);
-        }
-        responder(getDetails(results, 'Results', []));
-        start();
-        break;
-    case "3":
-        alert("You have exited the most-wanted search.");
-        break;
-    default:
-        alert("Invalid Selection!");
-        start();
-        break;
+        case "1":
+            let name = prompt("Enter a first and last name to search.")
+                .split(" ");
+            let person = matchingFirstName(name[0], matchingLastName(name[1], objects, isMatch), isMatch);
+            getUserSelection(person[0], objects, responder, getDescendants, getFirstNextOfKin, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, getDetails, sortByAge);
+            break;
+        case "2":
+            let results = objects;
+            alert("Please type what you know about the person.\n");
+            let input = prompt('Enter a gender.');
+            if (input !== "") {
+                results = matchingGender(input.toLowerCase(), results, isMatch);
+            }
+            input = prompt('Enter an age or age range (#-#)');
+            if (!isNaN(input) && input !== "") {
+                results = results.filter(o => matchingAge(o, input.split('-'), getAge));
+            }
+            let height = prompt('Enter a height #\'#"');
+            if (height !== "") {
+                input = convertHeightToInches(height);
+                results = matchingHeight(input, results, isMatch);
+            }
+            input = prompt('Enter a weight in pounds.');
+            if (input !== "") {
+                results = checkInput(input, isNaN, results, isMatch, matchingWeight, 'Please enter a valid weight in pounds');
+            }
+            input = prompt('Enter an eye color.');
+            if (input !== "") {
+                results = matchingEyeColor(input.toLowerCase(), results, isMatch);
+            }
+            input = prompt('Enter an occupation.');
+            if (input !== "") {
+                results = matchingOccupation(input.toLowerCase(), results, isMatch);
+            }
+            responder(getDetails(results, 'Results', []));
+            start();
+            break;
+        case "3":
+            alert("You have exited the most-wanted search.");
+            break;
+        default:
+            alert("Invalid Selection!");
+            start();
+            break;
     }
 };
 
@@ -326,31 +326,41 @@ const getUserSelection = (object, objects, responder, getDescendants, getFirstNe
     let details;
     let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin");
     switch (inputNumber) {
-    case '1':
-        let descendants = getDescendants(object, objects, isChildren, matchingChildren);
-        details = getDetails(descendants, 'Descendants', []);
-        responder(details);
-        break;
-    case '2':
-        let family = getFamily(object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects);
-        details = getDetails(family.spouse, 'Spouse', []);
-        details += getDetails(family.children, 'Children', []);
-        details += getDetails(family.parents, 'Parents', []);
-        details += getDetails(family.siblings, 'Siblings', []);
-        responder(details);
-        break;
-    case '3':
-        details = getFirstNextOfKin(object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, getDetails, sortByAge);
-        responder(details);
-        break;
-    default:
-        alert("Invalid Selection!");
-        break;
+        case '1':
+            let descendants = getDescendants(object, objects, isChildren, matchingChildren);
+            details = getDetails(descendants, 'Descendants', []);
+            responder(details);
+            break;
+        case '2':
+            let family = getFamily(object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects);
+            details = getDetails(family.spouse, 'Spouse', []);
+            details += getDetails(family.children, 'Children', []);
+            details += getDetails(family.parents, 'Parents', []);
+            details += getDetails(family.siblings, 'Siblings', []);
+            responder(details);
+            break;
+        case '3':
+            details = getFirstNextOfKin(object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, getDetails, sortByAge);
+            responder(details);
+            break;
+        default:
+            alert("Invalid Selection!");
+            break;
     }
     start();
 };
 
-const responder = (object) => alert(object);
+const sortByAge = (personArray) => {
+    if (personArray === undefined || personArray.length <= 0) return [];
+    return personArray.sort((a, b) => Date.parse(a.dob) - Date.parse(b.dob))[0];
+};
+
+const convertHeightToInches = (height) => {
+    let inchesInFoot = 12;
+    let heightArray = height.replace(/[^\d]/g, ' ')
+        .split(' ', 2);
+    return (+(heightArray[0] * inchesInFoot) + +heightArray[1]);
+};
 
 const isMatch = (element, object) => object == element;
 
@@ -363,37 +373,8 @@ const isParent = (element, indexOfElement, parents, indexOfParent) =>
 
 const isNotObject = (element, object) => object !== element;
 
-const getParents = (object, objects, parents = []) => {
-    object.parents.forEach(p => parents.push(...objects.filter(o => p === o.id)));
-    return parents;
-};
-
-const getAge = (ageString) => {
-    let controlledAge = Date.parse(ageString);
-    let msInYear = 31556952000;
-    let negativeFix = Date.now();
-    return parseInt(((negativeFix - controlledAge) / msInYear));
-};
-
-const matchingAge = (element, ageRange, getAge) => {
-    let controlledAge = getAge(element.dob);
-    if (ageRange.length === 1) {
-        return (controlledAge) == ageRange[0];
-    }
-    return controlledAge >= ageRange[0] && controlledAge <= ageRange[1];
-};
-
-const matchingParents = (parents, objects, isParent) => {
-    if (parents.length <= 0)
-        return [];
-    if (parents.length == 1)
-        return objects.filter(object => isParent(object.parents, parents, 0, 0));
-    return objects.filter(object =>
-        isParent(object.parents, 0, parents, 0) ||
-        isParent(object.parents, 0, parents, 1) ||
-        isParent(object.parents, 1, parents, 0) ||
-        isParent(object.parents, 1, parents, 1));
-};
+const excludeMatchingObjects = (element, objects, isNotObject) =>
+    objects.filter(object => isNotObject(element, object));
 
 const matchingGender = (element, objects, isMatch) =>
     objects.filter(object => isMatch(element, object.gender));
@@ -422,67 +403,105 @@ const matchingSpouse = (element, objects, isMatch) =>
 const matchingChildren = (element, objects, isChildren) =>
     objects.filter(object => isChildren(element, object));
 
-const excludeMatchingObjects = (element, objects, isNotObject) =>
-    objects.filter(object => isNotObject(element, object));
-
-const getDescendants =
-    (object, objects, isChildren, matchingChildren, allDescendants = []) => {
-        if (object === undefined) return [];
-        let children = matchingChildren(object, objects, isChildren);
-        if (children.length <= 0)
-            return [];
-        children.forEach(child => allDescendants.push(child));
-        children.forEach(child => getDescendants(child, objects, isChildren, matchingChildren, allDescendants));
-        return allDescendants;
-    }; 
-
-const getFamily =
-    (object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects, allFamilyMembers = []) => {
-        if (object === undefined) return [];
-        allFamilyMembers.spouse = matchingSpouse(object, objects, isMatch);
-        allFamilyMembers.children = matchingChildren(object, objects, isChildren);
-        allFamilyMembers.parents = getParents(object, objects);
-        allFamilyMembers.siblings = matchingParents(allFamilyMembers.parents.map(o => o.id), excludeMatchingObjects(object, objects, isNotObject), isParent);
-        return allFamilyMembers;
-    };
-
-const getNextOfKinList =
-    (object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, nextOfKin = []) => {
-        if (object === undefined) return [];
-        let family = getFamily(object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects);
-        nextOfKin.spouse = family.spouse;
-        nextOfKin.children = family.children;
-        nextOfKin.parents = family.parents;
-        nextOfKin.siblings = family.siblings;
-        nextOfKin.grandChildren = getRelatives(nextOfKin.children, objects, isChildren);
-        nextOfKin.grandParents = [];
-        nextOfKin.parents.forEach(object => nextOfKin.grandParents.push(...getParents(object, objects)));
-        nextOfKin.siblingsChildren = getRelatives(nextOfKin.siblings, objects, isChildren);
-        nextOfKin.parentsSiblings = matchingParents(nextOfKin.grandParents.map(o => o.id), excludeMatchingObjects(nextOfKin.parents, objects, isNotObject), isParent);
-        nextOfKin.greatGrandchildren = getRelatives(nextOfKin.grandChildren, objects, isChildren);
-        nextOfKin.greatGrandparents = [];
-        nextOfKin.grandParents.forEach(object => nextOfKin.greatGrandparents.push(...getParents(object, objects)));
-        return nextOfKin;
-    };
-
-const getRelatives =
-    (object, objects, association, relatives = []) => {
-        if (object.length <= 0) return [];
-        object.forEach(object =>
-            relatives.push(...objects.filter(o => association(object, o))));
-        return relatives;
-    };
-
-const sortByAge = (personArray) => {
-    if (personArray === undefined || personArray.length <= 0) return [];
-    return personArray.sort((a, b) => Date.parse(a.dob) - Date.parse(b.dob))[0];
+const matchingParents = (parents, objects, isParent) => {
+    if (parents.length <= 0)
+        return [];
+    if (parents.length == 1)
+        return objects.filter(object => isParent(object.parents, parents, 0, 0));
+    return objects.filter(object =>
+        isParent(object.parents, 0, parents, 0) ||
+        isParent(object.parents, 0, parents, 1) ||
+        isParent(object.parents, 1, parents, 0) ||
+        isParent(object.parents, 1, parents, 1));
 };
 
-const convertHeightToInches = (height) => {
-    let inchesInFoot = 12;
-    let heightArray = height.replace(/[^\d]/g, ' ')
-        .split(' ', 2);
-    return (+(heightArray[0] * inchesInFoot) + +heightArray[1]);
+const matchingAge = (element, ageRange, getAge) => {
+    let controlledAge = getAge(element.dob);
+    if (ageRange.length === 1) {
+        return (controlledAge) == ageRange[0];
+    }
+    return controlledAge >= ageRange[0] && controlledAge <= ageRange[1];
+};
+
+const getAge = (ageString) => {
+    let controlledAge = Date.parse(ageString);
+    let msInYear = 31556952000;
+    let negativeFix = Date.now();
+    return parseInt(((negativeFix - controlledAge) / msInYear));
+};
+
+const getParents = (object, objects, parents = []) => {
+    object.parents.forEach(p => parents.push(...objects.filter(o => p === o.id)));
+    return parents;
+};
+
+const getDescendants = (object, objects, isChildren, matchingChildren, allDescendants = []) => {
+    if (object === undefined) return [];
+    let children = matchingChildren(object, objects, isChildren);
+    if (children.length <= 0)
+        return [];
+    children.forEach(child => allDescendants.push(child));
+    children.forEach(child => getDescendants(child, objects, isChildren, matchingChildren, allDescendants));
+    return allDescendants;
+};
+
+const getFamily = (object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects, allFamilyMembers = []) => {
+    if (object === undefined) return [];
+    allFamilyMembers.spouse = matchingSpouse(object, objects, isMatch);
+    allFamilyMembers.children = matchingChildren(object, objects, isChildren);
+    allFamilyMembers.parents = getParents(object, objects);
+    allFamilyMembers.siblings = matchingParents(allFamilyMembers.parents.map(o => o.id), excludeMatchingObjects(object, objects, isNotObject), isParent);
+    return allFamilyMembers;
+};
+
+const getRelatives = (object, objects, association, relatives = []) => {
+    if (object.length <= 0) return [];
+    object.forEach(object =>
+        relatives.push(...objects.filter(o => association(object, o))));
+    return relatives;
+};
+
+const getNextOfKinList = (object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, nextOfKin = []) => {
+    if (object === undefined) return [];
+    let family = getFamily(object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects);
+    nextOfKin.spouse = family.spouse;
+    nextOfKin.children = family.children;
+    nextOfKin.parents = family.parents;
+    nextOfKin.siblings = family.siblings;
+    nextOfKin.grandChildren = getRelatives(nextOfKin.children, objects, isChildren);
+    nextOfKin.grandParents = [];
+    nextOfKin.parents.forEach(object => nextOfKin.grandParents.push(...getParents(object, objects)));
+    nextOfKin.siblingsChildren = getRelatives(nextOfKin.siblings, objects, isChildren);
+    nextOfKin.parentsSiblings = matchingParents(nextOfKin.grandParents.map(o => o.id), excludeMatchingObjects(nextOfKin.parents, objects, isNotObject), isParent);
+    nextOfKin.greatGrandchildren = getRelatives(nextOfKin.grandChildren, objects, isChildren);
+    nextOfKin.greatGrandparents = [];
+    nextOfKin.grandParents.forEach(object => nextOfKin.greatGrandparents.push(...getParents(object, objects)));
+    return nextOfKin;
+};
+
+const getFirstNextOfKin = (object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, getDetails, sortByAge) => {
+    let nextOfKin = getNextOfKinList(object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily);
+    if (nextOfKin.spouse.length > 0)
+        return getDetails(nextOfKin.spouse, 'Spouse', []);
+    if (nextOfKin.spouse.length <= 0 && nextOfKin.children.length > 0)
+        return getDetails(sortByAge(nextOfKin.children), 'Child', []);
+    if (nextOfKin.children.length <= 0 && nextOfKin.parents.length > 0)
+        return getDetails(sortByAge(nextOfKin.parents), 'Parent', []);
+    if (nextOfKin.parents.length <= 0 && nextOfKin.siblings.length > 0)
+        return getDetails(sortByAge(nextOfKin.siblings), 'Sibling', []);
+    if (nextOfKin.siblings.length <= 0 && nextOfKin.grandChildren.length > 0)
+        return getDetails(sortByAge(nextOfKin.grandChildren), 'Grand Child', []);
+    if (nextOfKin.grandChildren.length <= 0 && nextOfKin.grandParents.length > 0)
+        return getDetails(sortByAge(nextOfKin.grandParents), 'Grand Parent', []);
+    if (nextOfKin.grandParents.length <= 0 && nextOfKin.siblingsChildren.length > 0)
+        return getDetails(sortByAge(nextOfKin.siblingsChildren), 'Niece/Nephew', []);
+    if (nextOfKin.siblingsChildren.length <= 0 && nextOfKin.parentsSiblings)
+        return getDetails(sortByAge(nextOfKin.parentsSiblings), 'Aunt/Uncle', []);
+    if (nextOfKin.parentsSiblings.length <= 0 && nextOfKin.greatGrandchildren)
+        return getDetails(sortByAge(nextOfKin.greatGrandchildren), 'Great Grandchild', []);
+    if (nextOfKin.greatGrandchildren.length <= 0 && nextOfKin.greatGrandparents)
+        return getDetails(sortByAge(nextOfKin.greatGrandparents), 'Great Grandparent', []);
+    return 'No living next of kin.';
 };
 
 const getDetails = (people, label, keys) => {
@@ -494,27 +513,5 @@ const getDetails = (people, label, keys) => {
     });
     return string;
 };
-const getFirstNextOfKin = (object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, getDetails, sortByAge) => {
-    let nextOfKin = getNextOfKinList(object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily);
-    if (nextOfKin.spouse.length > 0) 
-        return getDetails(nextOfKin.spouse, 'Spouse', []);
-    if (nextOfKin.spouse.length <= 0 && nextOfKin.children.length > 0) 
-        return getDetails(sortByAge(nextOfKin.children), 'Child', []);
-    if (nextOfKin.children.length <= 0 && nextOfKin.parents.length > 0) 
-        return getDetails(sortByAge(nextOfKin.parents), 'Parent', []);
-    if (nextOfKin.parents.length <= 0 && nextOfKin.siblings.length > 0) 
-        return getDetails(sortByAge(nextOfKin.siblings), 'Sibling', []);
-    if (nextOfKin.siblings.length <= 0 && nextOfKin.grandChildren.length > 0) 
-        return getDetails(sortByAge(nextOfKin.grandChildren), 'Grand Child', []);
-    if (nextOfKin.grandChildren.length <= 0 && nextOfKin.grandParents.length > 0) 
-        return getDetails(sortByAge(nextOfKin.grandParents), 'Grand Parent', []);
-    if (nextOfKin.grandParents.length <= 0 && nextOfKin.siblingsChildren.length > 0) 
-        return getDetails(sortByAge(nextOfKin.siblingsChildren), 'Niece/Nephew', []);
-    if (nextOfKin.siblingsChildren.length <= 0 && nextOfKin.parentsSiblings) 
-        return getDetails(sortByAge(nextOfKin.parentsSiblings), 'Aunt/Uncle', []);
-    if (nextOfKin.parentsSiblings.length <= 0 && nextOfKin.greatGrandchildren) 
-        return getDetails(sortByAge(nextOfKin.greatGrandchildren), 'Great Grandchild', []);
-    if (nextOfKin.greatGrandchildren.length <= 0 && nextOfKin.greatGrandparents) 
-        return getDetails(sortByAge(nextOfKin.greatGrandparents), 'Great Grandparent', []);
-    return 'No living next of kin.';
-};
+
+const responder = (object) => alert(object);
