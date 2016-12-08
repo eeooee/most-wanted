@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-/*jshint -W007*/
 var dataObject = [{
     "id": 272822514,
     "firstName": "Billy",
