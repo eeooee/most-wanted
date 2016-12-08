@@ -138,3 +138,41 @@ describe(('function matchingParents'), () => {
         expect(matchingParents(parent, dataObject, isParent)).toEqual(expectedResultsTwo);
     });
 });
+
+describe(('function getFamily'), () => {
+    let dataObject = [
+        { "id": 888201200, "parents": []},
+        { "id": 313998000, "parents": [313207561, 313997561] },
+        { "id": 822843554, "parents": [693243224, 888201200] },
+        { "id": 819168108, "parents": [693243224] },
+        { "id": 969837479, "parents": [693243224, 888201200] },
+        { "id": 313207561, "parents": [693243224, 888201200] }];
+    let person = { "id": 693243224, "parents": [], };
+    let expectedSpouse = [ ];
+    it('check for matching spouse', () => {
+        expect(getFamily(person, dataObject, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects).spouse).toEqual(expectedSpouse);
+    });
+    let expectedChildren = [
+        { "id": 822843554, "parents": [693243224, 888201200] },
+        { "id": 819168108, "parents": [693243224] },
+        { "id": 969837479, "parents": [693243224, 888201200] },
+        { "id": 313207561, "parents": [693243224, 888201200] }];
+    it('check for matching children', () => {
+        expect(getFamily(person, dataObject, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects).children).toEqual(expectedChildren);
+    });
+
+    let testPersonThree = { "id": 313998000, "parents": [313207561, 313997561] };
+    let expectedParents = [ { "id": 313207561, "parents": [693243224, 888201200] }];
+    it('check for matching parents', () => {
+        expect(getFamily(testPersonThree, dataObject, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects).parents).toEqual(expectedParents);
+    });
+
+    let testPersonFound = { "id": 313207561, "parents": [693243224, 888201200] };
+    let expectedSiblings = [
+        { "id": 822843554, "parents": [693243224, 888201200] },
+        { "id": 969837479, "parents": [693243224, 888201200] },
+        { "id": 313207561, "parents": [693243224, 888201200] }];
+    it('check for matching siblings', () => {
+        expect(getFamily(testPersonFound, dataObject, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, isNotObject, excludeMatchingObjects).siblings).toEqual(expectedSiblings);
+    });
+});
