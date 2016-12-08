@@ -63,6 +63,7 @@ describe(('function isChildren'), () => {
         expect(isChildren(child, parent)).toBeFalsy();
     });
 });
+
 describe(('function matchingChildren'), () => {
     let dataObject = [
         { "id": 313998000, "parents": [313207561, 313997561] },
@@ -80,4 +81,23 @@ describe(('function matchingChildren'), () => {
     it('check if children match first parents', () => {
         expect(matchingChildren(parent, dataObject, isChildren)).toEqual(expectedResults);
     });
+});
+
+describe(('function isParent'), () => {
+    let first = 0;
+    let second = 1;
+    let parents = [ 693243224 ];
+    let child = [693243224, 888201200];
+
+    it('check for parents matching users parents', () => {
+        expect(isParent(child, first, parents, first)).toBeTruthy();
+    });
+
+    it('check for parents not matching users parents', () => {
+        expect(isParent(child, second, parents, first)).toBeFalsy();
+    });
+
+    it('check parents out of range to be falsy'), () => {
+        expect(isParent(child, second, parents, second)).toBeFalsy;
+    }
 });
