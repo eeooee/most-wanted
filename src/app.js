@@ -407,7 +407,7 @@ const matchingParents = (parents, objects, isParent) => {
     if (parents.length <= 0)
         return [];
     if (parents.length == 1)
-        return objects.filter(object => isParent(object.parents, parents, 0, 0));
+        return objects.filter(object => isParent(object.parents, 0, parents, 0) || isParent(object.parents, 1, parents, 0));
     return objects.filter(object =>
         isParent(object.parents, 0, parents, 0) ||
         isParent(object.parents, 0, parents, 1) ||

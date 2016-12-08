@@ -109,3 +109,32 @@ describe(('function isParent'), () => {
         expect(isParent(child, second, parents, first)).toBeFalsy();
     });
 });
+
+describe(('function matchingParents'), () => {
+    let dataObject = [
+        { "id": 313998000, "parents": [313207561, 313997561] },
+        { "id": 822843554, "parents": [693243224, 888201200] },
+        { "id": 819168108, "parents": [693243224] },
+        { "id": 969837479, "parents": [693243224, 888201200] },
+        { "id": 313207561, "parents": [693243224, 888201200] }]
+    let parents = [693243224, 888201200];
+    let parent = [888201200];
+    let expectedResults = [
+        { "id": 822843554, "parents": [693243224, 888201200] },
+        { "id": 819168108, "parents": [693243224] },
+        { "id": 969837479, "parents": [693243224, 888201200] },
+        { "id": 313207561, "parents": [693243224, 888201200] }]
+
+    let expectedResultsTwo = [
+        { "id": 822843554, "parents": [693243224, 888201200] },
+        { "id": 969837479, "parents": [693243224, 888201200] },
+        { "id": 313207561, "parents": [693243224, 888201200] }]
+
+    it('check for matching parents out of list', () => {
+        expect(matchingParents(parents, dataObject, isParent)).toEqual(expectedResults);
+    });
+
+    it('check for only matching one parents out of list', () => {
+        expect(matchingParents(parent, dataObject, isParent)).toEqual(expectedResultsTwo);
+    });
+});
