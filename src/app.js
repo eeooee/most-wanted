@@ -448,9 +448,7 @@ const getRelatives =
     };
 const sortByAge = (personArray, eldest = []) => {
     if (personArray === undefined || personArray.length <= 0) return [];
-    let results = personArray.sort((a, b) => Date.parse(a.dob) - Date.parse(b.dob));
-    eldest.push(results[0]);
-    return eldest;
+    return personArray.sort((a, b) => Date.parse(a.dob) - Date.parse(b.dob))[0];
 };
 const convertHeightToInches = (height) => {
     let inchesInFoot = 12;
