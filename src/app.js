@@ -473,7 +473,7 @@ const getRelatives =
         return relatives;
     };
 
-const sortByAge = (personArray, eldest = []) => {
+const sortByAge = (personArray) => {
     if (personArray === undefined || personArray.length <= 0) return [];
     return personArray.sort((a, b) => Date.parse(a.dob) - Date.parse(b.dob))[0];
 };
