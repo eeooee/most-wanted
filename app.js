@@ -273,10 +273,9 @@ const start = () => {
         let name = prompt("Enter a first and last name to search.")
             .split(" ");
         let person = matchingFirstName(name[0], matchingLastName(name[1], objects, isMatch), isMatch);
-        getUserSelection(person[0], objects, responder, getDetails, getDescendants, getFamily, getFirstNextOfKin, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, getDetails, sortByAge);
+        getUserSelection(person[0], objects, responder, getDescendants, getFirstNextOfKin, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, getDetails, sortByAge);
         break;
     case "2":
-        let traits = [];
         let results = objects;
         alert("Please type what you know about the person.\n");
         let input = prompt('Enter a gender.');
@@ -294,7 +293,7 @@ const start = () => {
         }
         input = prompt('Enter a weight in pounds.');
         if (input !== "") {
-            result = checkInput(input, isNaN, results, isMatch, matchingAge, 'Please enter a valid weight in pounds');
+            results = checkInput(input, isNaN, results, isMatch, matchingWeight, 'Please enter a valid weight in pounds');
         }
         input = prompt('Enter an eye color.');
         if (input !== "") {
@@ -322,7 +321,7 @@ const checkInput = (input, condition, previousResults, isMatch, matchingFunction
     }
     return matchingFunction(input, previousResults, isMatch);
 };
-const getUserSelection = (object, objects, responder, getDetails, getDescendants, getFamily, getFirstNextOfKin, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, getDetails, sortByAge) => {
+const getUserSelection = (object, objects, responder, getDescendants, getFirstNextOfKin, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, getDetails, sortByAge) => {
     let details;
     let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin");
     switch (inputNumber) {
