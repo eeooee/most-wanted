@@ -83,6 +83,18 @@ describe(('function matchingChildren'), () => {
     });
 });
 
+describe(('function getParents'), () => {
+    let people = [
+        { "id": 313998000, "parents": [313207561, 313997561] },
+        { "id": 822843554, "parents": [693243224, 888201200] },
+        { "id": 313207561, "parents": [693243224, 888201200] }];
+    let person = { "parents": [313207561] };
+    let expectedResults = [{ "id": 313207561, "parents": [693243224, 888201200] }];
+    it('return each parent id for the user input', () => {
+        expect(getParents(person, people)).toEqual(expectedResults);    
+    });
+});
+
 describe(('function isParent'), () => {
     let first = 0;
     let second = 1;
@@ -96,8 +108,4 @@ describe(('function isParent'), () => {
     it('check for parents not matching users parents', () => {
         expect(isParent(child, second, parents, first)).toBeFalsy();
     });
-
-    it('check parents out of range to be falsy'), () => {
-        expect(isParent(child, second, parents, second)).toBeFalsy;
-    }
 });
