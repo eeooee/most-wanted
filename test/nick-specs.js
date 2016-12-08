@@ -1,6 +1,4 @@
 describe(('function isMatch'), () => {
-    const isMatch = (element, object) => object == element;
-
     it('match the same integer', () => {
         expect(isMatch(2 ,2)).toBeTruthy();
     });
@@ -20,20 +18,12 @@ describe(('function isMatch'), () => {
 
 describe(('function matchingGender'), () => {
     const dataObject = [ { "gender": "male" }, { "gender": "female" }];
-    const isMatch = (element, object) => object == element;
 
-    const matchingGender = (element, objects, isMatch) =>
-        objects.filter(object => isMatch(element, object.gender));
-
-    let expectedResultsOne = [];
-    expectedResultsOne.push(dataObject[0]);
     it('check if male matches any object', () => {
-        expect(matchingGender('male', dataObject, isMatch)).toEqual(expectedResultsOne);
+        expect(matchingGender('male', dataObject, isMatch)[0]).toEqual(dataObject[0]);
     });
 
-    let expectedResultsTwo = [];
-    expectedResultsTwo.push(dataObject[1]);
     it('check if female matches any object', () => {
-        expect(matchingGender('female', dataObject, isMatch)).toEqual(expectedResultsTwo);
+        expect(matchingGender('female', dataObject, isMatch)[0]).toEqual(dataObject[1]);
     });
 });
