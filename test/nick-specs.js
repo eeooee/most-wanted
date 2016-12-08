@@ -1,14 +1,14 @@
 describe(('function isMatch'), () => {
     it('match the same integer', () => {
-        expect(isMatch(2 ,2)).toBeTruthy();
+        expect(isMatch(2, 2)).toBeTruthy();
     });
 
     it('match the same string', () => {
-        expect(isMatch('female' ,'female')).toBeTruthy();
+        expect(isMatch('female', 'female')).toBeTruthy();
     });
 
     it('match string to integer', () => {
-        expect(isMatch('1' ,1)).toBeTruthy();
+        expect(isMatch('1', 1)).toBeTruthy();
     });
 
     it('false on input that does not match', () => {
@@ -17,13 +17,67 @@ describe(('function isMatch'), () => {
 });
 
 describe(('function matchingGender'), () => {
-    const dataObject = [ { "gender": "male" }, { "gender": "female" }];
+    const dataObject = [
+        { "gender": "male" },
+        { "gender": "female" }];
 
+    let expectedResultsOne = [{ "gender": "male" }];
     it('check if male matches any object', () => {
-        expect(matchingGender('male', dataObject, isMatch)[0]).toEqual(dataObject[0]);
+        expect(matchingGender('male', dataObject, isMatch)).toEqual(expectedResultsOne);
     });
 
+    let expectedResultsTwo = [{ "gender": "female" }];
     it('check if female matches any object', () => {
-        expect(matchingGender('female', dataObject, isMatch)[0]).toEqual(dataObject[1]);
+        expect(matchingGender('female', dataObject, isMatch)).toEqual(expectedResultsTwo);
+    });
+});
+
+describe(('function matchingSpouse'), () => {
+    const dataObject = [
+        { "id": 313207561, "currentSpouse": 313997561 },
+        { "id": 313997561, "currentSpouse": 313207561 },
+        { "id": 969837479, "currentSpouse": null }];
+
+    let firstPerson = dataObject[0];
+    let expectedResultsOne = [dataObject[1]];
+    it('check if person one spouse id matches person two id', () => {
+        expect(matchingSpouse(firstPerson, dataObject, isMatch)).toEqual(expectedResultsOne);
+    });
+
+    let secondPerson = dataObject[1];
+    let expectedResultsTwo = [dataObject[0]];
+    it('check if person two spouse id matches person one id', () => {
+        expect(matchingSpouse(secondPerson, dataObject, isMatch)).toEqual(expectedResultsTwo);
+    });
+});
+
+describe(('function isChildren'), () => {
+    let parent = { "id": 693243224, "parents": [], };
+    let child = { "id": 822843554, "parents": [693243224] };
+
+    it('check if parents id equals one object id', () => {
+        expect(isChildren(parent, child)).toBeTruthy();
+    });
+
+    it('check for false when parents id does not equal object id', () => {
+        expect(isChildren(child, parent)).toBeFalsy();
+    });
+});
+describe(('function matchingChildren'), () => {
+    let dataObject = [
+        { "id": 313998000, "parents": [313207561, 313997561] },
+        { "id": 822843554, "parents": [693243224, 888201200] },
+        { "id": 819168108, "parents": [693243224] },
+        { "id": 969837479, "parents": [693243224, 888201200] },
+        { "id": 313207561, "parents": [693243224, 888201200] }]
+    let parent = { "id": 693243224, "parents": [], };
+    let expectedResults = [
+        { "id": 822843554, "parents": [693243224, 888201200] },
+        { "id": 819168108, "parents": [693243224] },
+        { "id": 969837479, "parents": [693243224, 888201200] },
+        { "id": 313207561, "parents": [693243224, 888201200] }]
+
+    it('check if children match first parents', () => {
+        expect(matchingChildren(parent, dataObject, isChildren)).toEqual(expectedResults);
     });
 });
