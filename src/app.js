@@ -285,10 +285,10 @@ const start = () => {
             if (!isNaN(input) && input !== "") {
                 results = results.filter(o => matchingAge(o, input.split('-'), getAge));
             }
-            let height = prompt('Enter a height #\'#"');
-            if (height !== "") {
-                input = convertHeightToInches(height);
-                results = matchingHeight(input, results, isMatch);
+            input = prompt('Enter a height #\'#"');
+            if (input !== "") {
+                let height = convertHeightToInches(input);
+                results = matchingHeight(height, results, isMatch);
             }
             input = prompt('Enter a weight in pounds.');
             if (input !== "") {
