@@ -350,9 +350,11 @@ const getUserSelection = (object, objects, responder, getDescendants, getFirstNe
     start();
 };
 
-const sortByAge = (personArray) => {
+const sortByAge = (personArray, eldest = []) => {
     if (personArray === undefined || personArray.length <= 0) return [];
-    return personArray.sort((a, b) => Date.parse(a.dob) - Date.parse(b.dob))[0];
+    let results = personArray.sort((a, b) => Date.parse(a.dob) - Date.parse(b.dob));
+    eldest.push(results[0]);
+    return eldest;
 };
 
 const convertHeightToInches = (height) => {
