@@ -50,3 +50,10 @@ jspm_packages
 # Yarn Integrity file
 .yarn-integrity
 
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
