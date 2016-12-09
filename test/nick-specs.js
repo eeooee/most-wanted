@@ -1,3 +1,4 @@
+/* eslint no-undef: "off" */
 describe(('function isMatch'), () => {
     it('match the same integer', () => {
         expect(isMatch(2, 2)).toBeTruthy();
