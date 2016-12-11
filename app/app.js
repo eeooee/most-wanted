@@ -276,7 +276,7 @@ const start = () => {
             break;
         case "2":
             let results = objects;
-            alert("Please type what you know about the person.\n");
+            alert("Please type what you know about the person.\n  You can leave fields blank if you aren't sure.");
             let input = prompt('Enter a gender.');
             if (input !== "") {
                 results = matchingGender(input.toLowerCase(), results, isMatch);
@@ -324,7 +324,7 @@ const checkInput = (input, condition, previousResults, isMatch, matchingFunction
 
 const getUserSelection = (object, objects, responder, getDescendants, getFirstNextOfKin, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, getDetails, sortByAge) => {
     let details;
-    let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin");
+    let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n4.  Display Known Profile");
     switch (inputNumber) {
         case '1':
             let descendants = getDescendants(object, objects, isChildren, matchingChildren);
@@ -341,6 +341,10 @@ const getUserSelection = (object, objects, responder, getDescendants, getFirstNe
             break;
         case '3':
             details = getFirstNextOfKin(object, objects, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, getDetails, sortByAge);
+            responder(details);
+            break;
+        case '4': 
+            details = getDetails([object],'Profile:', ["gender", "dob", "height", "weight", "eyeColor", "occupation"]);
             responder(details);
             break;
         default:
