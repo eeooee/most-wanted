@@ -324,7 +324,7 @@ const checkInput = (input, condition, previousResults, isMatch, matchingFunction
 
 const getUserSelection = (object, objects, responder, getDescendants, getFirstNextOfKin, getParents, isMatch, isParent, matchingParents, matchingSpouse, isChildren, matchingChildren, getRelatives, isNotObject, excludeMatchingObjects, getFamily, getDetails, sortByAge) => {
     let details;
-    let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n4.  Display Known Profile");
+    let inputNumber = prompt("SELECT A NUMBER:\r\n1. Find Descendants\r\n2. Find Immediate Family\r\n3. Find Next of Kin\r\n4. Display Known Profile");
     switch (inputNumber) {
         case '1':
             let descendants = getDescendants(object, objects, isChildren, matchingChildren);
@@ -344,7 +344,7 @@ const getUserSelection = (object, objects, responder, getDescendants, getFirstNe
             responder(details);
             break;
         case '4': 
-            details = getDetails([object],'Profile:', ["gender", "dob", "height", "weight", "eyeColor", "occupation"]);
+            details = getDetails([object],'Profile', ["gender", "dob", "height", "weight", "eyeColor", "occupation"]);
             responder(details);
             break;
         default:
